@@ -95,13 +95,15 @@ const ServicesScrollFirst: React.FC = () => {
             data-index={index}
             className="h-screen w-full flex items-center justify-center bg-gray-100"
           >
-            <Image
-              src={service.image}
-              alt={`Service ${index + 1}`}
-              className="w-full h-full object-cover"
-              fill
-              priority
-            />
+            <div className="relative w-full h-full">
+              <Image
+                src={service.image}
+                alt={`Service ${index + 1}`}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
           </section>
         ))}
       </div>
