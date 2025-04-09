@@ -5,6 +5,7 @@ import Hero from "@/components/landing/Hero";
 import SplashScreen from "@/components/SplashScreen";
 import About from "@/components/landing/About";
 import Services from "@/components/landing/Services";
+import ScrollScaleText from "@/components/ScrollScaleText";
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
@@ -17,14 +18,13 @@ export default function Home() {
         <div className="">
           {/* Scroll-animated logo section */}
           <Hero />
-
           {/* Spacer to prevent overlap */}
           <div className="h-[20vh]" />
-
           {/* Image + text section */}
-
           <About />
           <Services />
+          <ScrollScaleText text="Colaboramos" />
+          <div className="h-screen bg-pink-100"></div>
         </div>
       )}
     </>
