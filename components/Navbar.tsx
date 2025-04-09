@@ -24,8 +24,8 @@ export default function Navbar() {
       {/* Nav Links */}
       <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest font-light mix-blend-difference">
         <Link href="/">Inicio</Link>
-        <Link href="#nosotros">Nosotros</Link>
-        <Link href="#proyectos">Proyectos</Link>
+        <Link href="#servicios">Servicios</Link>
+        <Link href="#colaboradores">Colaboradores</Link>
         <Link href="#contacto">Contacto</Link>
       </div>
     </nav>

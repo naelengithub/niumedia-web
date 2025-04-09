@@ -5,6 +5,7 @@ import Image from "next/image";
 
 interface ScrollScaleTextProps {
   text: string;
+  id?: string;
 }
 
 // Array of logo image paths
@@ -13,7 +14,7 @@ const clientLogos = Array.from(
   (_, i) => `/client-logos/logo${i}.svg`
 );
 
-export default function ScrollScaleText({ text }: ScrollScaleTextProps) {
+export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const [fontSizeVW, setFontSizeVW] = useState(4);
@@ -53,11 +54,14 @@ export default function ScrollScaleText({ text }: ScrollScaleTextProps) {
       const fontSize = MIN_FONT + scaleProgress * (MAX_FONT - MIN_FONT);
       setFontSizeVW(fontSize);
 
-      // Dynamically calculate max allowed translateX
-      const textWidth = textEl.offsetWidth;
-      const containerRight =
-        window.innerWidth - sectionEl.getBoundingClientRect().right;
-      const maxTranslate = window.innerWidth - textWidth - containerRight - 16; // 16px right padding
+      // Dynamically calculate max allowed translateX based on container padding
+      const containerLeft = sectionEl.getBoundingClientRect().left;
+      const containerPaddingLeft = parseFloat(
+        getComputedStyle(sectionEl).paddingLeft || "0"
+      );
+      const targetX = containerLeft + containerPaddingLeft;
+      const textLeft = textEl.getBoundingClientRect().left;
+      const maxTranslate = textLeft - targetX - 24;
 
       const shouldSlide = top < SLIDE_START;
       const rawTranslate = shouldSlide ? (SLIDE_START - top) / SLIDE_SPEED : 0;
@@ -81,14 +85,15 @@ export default function ScrollScaleText({ text }: ScrollScaleTextProps) {
 
   return (
     <section
-      className="relative h-[300vh] bg-blue-900 text-white"
+      className="relative h-[300vh] bg-[#084152] text-white"
       ref={sectionRef}
+      id={id}
     >
-      <div className="sticky top-0 h-screen flex flex-col justify-center items-end pr-6 overflow-hidden">
+      <div className="sticky top-0 h-screen flex flex-col justify-center items-end p-6 md:py-24 overflow-hidden">
         {/* Main text */}
         <p
           ref={textRef}
-          className="leading-none font-light transition-all duration-100 ease-out whitespace-nowrap text-right pl-4 sm:pl-0"
+          className="leading-none font-light transition-all duration-100 ease-out whitespace-nowrap p-4 sm:p-0 self-end"
           style={{
             fontSize: `${fontSizeVW}vw`,
             transform: `translateX(-${translateX}px)`,
@@ -99,7 +104,7 @@ export default function ScrollScaleText({ text }: ScrollScaleTextProps) {
 
         {/* Subtitle */}
         <p
-          className={`mt-10 text-xl font-light transition-all duration-700 ease-out ${
+          className={`mt-0 md:mt-2 lg:mt-6 text-2xl md:text-5xl font-light transition-all duration-900 ease-out ${
             showSubtitle
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-4 pointer-events-none"

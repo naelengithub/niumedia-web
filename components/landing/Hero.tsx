@@ -16,7 +16,7 @@ export default function Hero() {
   const translateY = Math.min(scrollY / 4, 800);
 
   return (
-    <section className="flex justify-center items-end sticky top-0 h-screen z-10 overflow-hidden pb-24">
+    <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 overflow-hidden pb-24">
       <div
         className="relative flex flex-col items-center text-center space-y-6 transition-transform duration-200 ease-out origin-bottom"
         style={{
@@ -36,7 +36,7 @@ export default function Hero() {
         </div>
 
         <h1 className="text-[20vw] font-light mb-0 px-0">Niumedia</h1>
-        <div className="flex font-bold w-full px-1 justify-between uppercase text-xl lg:text-6xl tracking-wider">
+        <div className="flex font-bold w-full px-1 justify-between text-xl lg:text-6xl tracking-wider">
           {"networks".split("").map((char, index) => (
             <span key={index}>{char}</span>
           ))}
