@@ -12,6 +12,9 @@ export default {
         testblue: "#084152",
         "light-blue": "var(--bg-light-blue)",
       },
+      fontFamily: {
+        neue: ['"NeueHaasDisplay"', "sans-serif"],
+      },
     },
   },
   plugins: [],
