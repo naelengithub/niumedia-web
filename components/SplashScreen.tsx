@@ -10,21 +10,18 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
   const [startFadeOut, setStartFadeOut] = useState(false);
 
   useEffect(() => {
-    // Step 1: Trigger move to top-left
     const moveTimer = setTimeout(() => {
       setStartExitAnimation(true);
-    }, 1100); // Reduced delay
+    }, 1100);
 
-    // Step 2: Fade out logo after it lands
     const fadeTimer = setTimeout(() => {
       setStartFadeOut(true);
-    }, 1700); // 1.1s delay + 0.6s move duration
+    }, 1700);
 
-    // Step 3: Hide splash and trigger onFinished
     const finalTimer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onFinished, 300); // small buffer
-    }, 2000); // total splash time reduced
+      setTimeout(onFinished, 300);
+    }, 2000);
 
     return () => {
       clearTimeout(moveTimer);
@@ -86,8 +83,8 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
               animate={
                 startExitAnimation
                   ? {
-                      top: "2rem",
-                      left: "3rem",
+                      top: "2rem", // py-8 always
+                      left: "1.5rem", // px-6 mobile
                       x: "0%",
                       y: "0%",
                       scale: 1,
@@ -104,7 +101,7 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
                   ? "opacity 0.6s ease-in-out"
                   : undefined,
               }}
-              className="w-12 h-6"
+              className="w-12 h-6 sm:left-12 sm:pl-6"
             >
               <AnimatedLogo />
             </motion.div>

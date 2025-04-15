@@ -5,7 +5,7 @@ import Logo from "./Logo";
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-12 py-8 flex items-center justify-between bg-transparent">
+    <nav className="fixed top-0 left-0 w-full z-50 px-6 py-8 flex items-center justify-between bg-transparent sm:px-12">
       {/* Logo */}
       <Link href="/" className="flex flex-col items-center gap-2 w-fit">
         <div className="flex gap-2 color-black mix-blend-difference">

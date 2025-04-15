@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Hero() {
   const [scrollY, setScrollY] = useState(0);
@@ -23,8 +24,13 @@ export default function Hero() {
           transform: `scale(${scale}) translateY(-${translateY}px)`,
         }}
       >
-        {/* Sphere image positioned top-right, behind text */}
-        <div className="absolute -top-80 lg:-top-60 right-0 md:right-40 lg:right-60 -z-10 w-[70vw] md:w-[40vw] lg:w-[30vw] pointer-events-none">
+        {/* Animated Image first */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="absolute -top-50 lg:-top-60 right-0 md:right-40 lg:right-60 -z-10 w-[70vw] md:w-[40vw] lg:w-[30vw] pointer-events-none"
+        >
           <Image
             src="/images/esfera-abstracta.png"
             width={800}
@@ -33,14 +39,26 @@ export default function Hero() {
             className="w-full h-auto"
             priority
           />
-        </div>
+        </motion.div>
 
-        <h1 className="text-[20vw] font-light mb-0 px-0">Niumedia</h1>
-        <div className="flex font-bold w-full px-1 justify-between text-xl lg:text-6xl tracking-wider">
-          {"networks".split("").map((char, index) => (
-            <span key={index}>{char}</span>
-          ))}
-        </div>
+        {/* Then fade+pop the text in */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 1.2,
+            delay: 0.1,
+            ease: [0.33, 1, 0.68, 1],
+          }}
+          className="flex flex-col items-center space-y-6"
+        >
+          <h1 className="text-[20vw] mb-0 px-0">Niumedia</h1>
+          <div className="flex w-full px-1 justify-between text-xl lg:text-6xl tracking-wider">
+            {"networks".split("").map((char, index) => (
+              <span key={index}>{char}</span>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

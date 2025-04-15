@@ -64,7 +64,7 @@ const navigation = {
 export default function Footer() {
   return (
     <footer className="flex flex-col">
-      <div className="relative min-h-52 flex flex-col gap-12 md:flex-row items-start justify-between overflow-hidden px-6 py-12 sm:gap-20 sm:min-h-44 lg:px-8">
+      <div className="relative min-h-52 flex flex-col gap-12 md:flex-row items-start justify-between overflow-hidden px-6 py-12 sm:gap-20 sm:min-h-44 sm:px-12">
         <nav
           aria-label="Footer"
           className="flex flex-col justify-center gap-x-12 gap-y-3 text-sm/6"
@@ -93,7 +93,7 @@ export default function Footer() {
           ))}
         </div>
       </div>
-      <p className="mb-10 text-center text-sm/6 text-gray-900">
+      <p className="mb-10 text-center text-xs text-gray-900">
         &copy; 2025 Niumedia. Derechos reservados.
         <br />
         Web por{" "}

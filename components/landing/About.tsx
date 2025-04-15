@@ -6,7 +6,7 @@ export default function About() {
   return (
     <section className="p-8 md:p-12">
       <div className="text-xl leading-8 md:text-6xl md:leading-16">
-        <div className="flex items-end gap-4">
+        <div className="flex items-end gap-4 lg:justify-center">
           <Image
             src="/about.png"
             alt="About visual"
@@ -14,7 +14,7 @@ export default function About() {
             height={208}
             className="w-32 h-40 pb-1 md:w-52 md:h-52 lg:w-72 lg:h-72 object-cover"
           />
-          <span className="">
+          <span className="max-w-72 md:max-w-4xl">
             Construimos nuevas y mejores formas de comunicación.
           </span>
         </div>
