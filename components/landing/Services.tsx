@@ -3,45 +3,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { getServices } from "@/sanity/sanity-utils";
+import { Service } from "@/types/Service";
+import { PortableText } from "@portabletext/react";
 
 interface ServicesProps {
   id?: string;
 }
 
-const services = [
-  {
-    number: 1,
-    title: "DIGITAL SIGNAGE",
-    description:
-      "We design. We build. We deliver. This dummy text represents a unique digital signage experience tailored to modern business needs.",
-    image: "/images/d.jpg",
-  },
-  {
-    number: 2,
-    title: "STREAMING",
-    description:
-      "An all-in-one platform to easily manage and broadcast content across digital displays. Stay connected and in control.",
-    image: "/images/b.jpg",
-  },
-  {
-    number: 3,
-    title: "PRODUCCIÓN DE CONTENIDO DIGITAL",
-    description:
-      "Powerful solutions that redefine how your brand communicates visually, both indoors and outdoors.",
-    image: "/images/c.jpg",
-  },
-  {
-    number: 4,
-    title: "EVENTOS VIRTUALES EN VIVO",
-    description:
-      "Interactive, scalable, and beautifully designed digital display systems that evolve with your business.",
-    image: "/images/a.jpg",
-  },
-];
-
 const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
+  const [services, setServices] = useState<Service[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    getServices().then(setServices);
+  }, []);
 
   useEffect(() => {
     const sections = containerRef.current?.querySelectorAll("[data-index]");
@@ -61,9 +38,7 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
 
     sections.forEach((section) => observer.observe(section));
     return () => sections.forEach((section) => observer.unobserve(section));
-  }, []);
-
-  const current = services[activeIndex];
+  }, [services]);
 
   return (
     <div className="w-full" id={id}>
@@ -73,24 +48,31 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
         ref={containerRef}
       >
         {/* LEFT SIDE */}
-        <div className="w-2/5 h-screen sticky top-0 flex-col justify-center p-12 border-r border-black bg-white overflow-hidden">
-          <p className="text-sm mb-4 mt-24 tracking-wide">NUESTROS SERVICIOS</p>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-            >
-              <div className="text-7xl font-bold mb-6">{current.number}</div>
-              <h2 className="text-2xl font-bold mb-4">{current.title}</h2>
-              <p className="text-base max-w-sm leading-relaxed">
-                {current.description}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+        {services.length > 0 && (
+          <div className="w-2/5 h-screen sticky top-0 flex-col justify-center p-12 border-r border-black bg-white overflow-hidden">
+            <p className="text-sm mb-4 mt-24 tracking-wide">
+              NUESTROS SERVICIOS
+            </p>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <div className="text-7xl font-bold mb-6">{activeIndex + 1}</div>
+                <h2 className="text-2xl font-bold mb-4">
+                  {services[activeIndex].name}
+                </h2>
+                <div className="text-base max-w-sm leading-relaxed prose">
+                  <PortableText value={services[activeIndex].content} />
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        )}
+
         {/* RIGHT SIDE */}
         <div className="w-3/5">
           {services.map((service, index) => (
@@ -102,9 +84,9 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
               <div className="relative w-full h-full">
                 <Image
                   src={service.image}
-                  alt={`Service ${index + 1}`}
+                  alt={service.alt || `Service ${index + 1}`}
                   fill
-                  sizes="100vw" // ✅ required when using fill
+                  sizes="100vw"
                   className="object-cover"
                   priority
                 />
@@ -125,16 +107,18 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
             <div className="relative w-full h-full sm:h-96">
               <Image
                 src={service.image}
-                alt={`Service ${index + 1}`}
+                alt={service.alt || `Service ${index + 1}`}
                 fill
                 className="object-cover"
                 priority
               />
             </div>
             <div className="w-full p-6 bg-white min-h-[40vh] border-t border-black">
-              <div className="text-4xl font-bold mb-4">{service.number}</div>
-              <h2 className="text-xl font-bold mb-2">{service.title}</h2>
-              <p className="text-base leading-relaxed">{service.description}</p>
+              <div className="text-4xl font-bold mb-4">{index + 1}</div>
+              <h2 className="text-xl font-bold mb-2">{service.name}</h2>
+              <div className="text-base leading-relaxed prose">
+                <PortableText value={service.content} />
+              </div>
             </div>
           </div>
         ))}
