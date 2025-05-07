@@ -12,11 +12,11 @@ export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
 
   return (
-    <>
+    <div className="">
       {showSplash ? (
         <SplashScreen onFinished={() => setShowSplash(false)} />
       ) : (
-        <div className="">
+        <div>
           {/* Scroll-animated logo section */}
           <Hero />
           {/* Spacer to prevent overlap */}
@@ -29,6 +29,6 @@ export default function Home() {
           {/* <div className="h-screen bg-pink-100"></div> */}
         </div>
       )}
-    </>
+    </div>
   );
 }

@@ -83,7 +83,7 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
               animate={
                 startExitAnimation
                   ? {
-                      top: "2rem", // py-8 always
+                      top: "1rem", // py-8 always
                       left: "1.5rem", // px-6 mobile
                       x: "0%",
                       y: "0%",
@@ -101,7 +101,7 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
                   ? "opacity 0.6s ease-in-out"
                   : undefined,
               }}
-              className="w-12 h-6 sm:left-12 sm:pl-6"
+              className="w-12 h-6"
             >
               <AnimatedLogo />
             </motion.div>

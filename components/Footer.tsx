@@ -93,7 +93,7 @@ export default function Footer() {
           ))}
         </div>
       </div>
-      <p className="mb-10 text-center text-xs text-gray-900">
+      {/* <p className="mb-10 text-center text-xs text-gray-900">
         &copy; 2025 Niumedia. Derechos reservados.
         <br />
         Web por{" "}
@@ -101,7 +101,7 @@ export default function Footer() {
           Ana Elisa
         </Link>
         .
-      </p>
+      </p> */}
     </footer>
   );
 }

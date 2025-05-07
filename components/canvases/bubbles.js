@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import p5 from "p5";
 
 const gravity = 0.03;
@@ -8,15 +8,17 @@ const friction = -0.9;
 
 let ball;
 let image;
+let shouldMove = false;
 
 export default function P5Sketch() {
   const sketchRef = useRef(null);
   const p5Instance = useRef(null);
+  const [visible, setVisible] = useState(false); // 👈 for slide-in effect
 
   useEffect(() => {
     const sketch = (p) => {
       p.preload = () => {
-        image = p.loadImage("/images/im3.png"); // Adjust if needed
+        image = p.loadImage("/images/im3.png");
       };
 
       p.setup = () => {
@@ -25,17 +27,19 @@ export default function P5Sketch() {
         p.createCanvas(width, height);
 
         const diameter = width < 768 ? 120 : 250;
-        const startX = diameter / 2; // hard against left edge
-        const startY = -diameter; // start above the section
+        const startX = -5 * diameter;
+        const startY = -3 * diameter;
         ball = new Ball(startX, startY, diameter, image);
 
         p.noStroke();
       };
 
       p.draw = () => {
-        p.clear(); // Transparent background
-        ball.move(p);
-        ball.display(p);
+        p.clear();
+        if (image && ball) {
+          ball.move(p);
+          ball.display(p);
+        }
       };
 
       p.windowResized = () => {
@@ -47,20 +51,35 @@ export default function P5Sketch() {
 
     p5Instance.current = new p5(sketch, sketchRef.current);
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          shouldMove = true;
+          setVisible(true); // 👈 trigger slide-in
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sketchRef.current) observer.observe(sketchRef.current);
+
     return () => {
       p5Instance.current.remove();
+      if (sketchRef.current) observer.unobserve(sketchRef.current);
     };
   }, []);
 
   return (
     <div
       ref={sketchRef}
-      className="w-full h-full absolute top-0 left-0 pointer-events-none -z-10"
+      className={`w-full h-full absolute top-0 left-0 pointer-events-none -z-10 transition-all duration-1000 ease-in-out transform ${
+        visible ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"
+      }`}
     />
   );
 }
 
-// Ball class definition
+// Ball class
 class Ball {
   constructor(x, y, diameter, img) {
     this.x = x;
@@ -73,6 +92,8 @@ class Ball {
   }
 
   move(p) {
+    if (!shouldMove) return;
+
     this.vy += gravity;
     this.x += this.vx;
     this.y += this.vy;
@@ -80,26 +101,22 @@ class Ball {
     const canvasWidth = p.width;
     const canvasHeight = p.height;
 
-    // Right wall
     if (this.x + this.diameter / 2 > canvasWidth) {
       this.x = canvasWidth - this.diameter / 2;
       this.vx *= friction;
     }
 
-    // Left wall
-    else if (this.x - this.diameter / 2 < 0) {
+    if (this.x - this.diameter / 2 < 0) {
       this.x = this.diameter / 2;
       this.vx *= friction;
     }
 
-    // Bottom "floor" = bottom of <Contact />
     if (this.y + this.diameter / 2 > canvasHeight) {
       this.y = canvasHeight - this.diameter / 2;
       this.vy *= friction;
     }
 
-    // Top ceiling
-    else if (this.y - this.diameter / 2 < 0) {
+    if (this.y - this.diameter / 2 < 0) {
       this.y = this.diameter / 2;
       this.vy *= friction;
     }
@@ -109,6 +126,7 @@ class Ball {
   }
 
   display(p) {
+    if (!this.img) return;
     p.push();
     p.translate(this.x, this.y);
     p.rotate(this.rotation);

@@ -85,7 +85,7 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
 
   return (
     <section
-      className="relative h-[300vh] bg-[#084152] text-white"
+      className="relative h-[300vh] bg-gradient-to-tl from-[#006881] to-[#3767ba] text-white"
       ref={sectionRef}
       id={id}
     >
