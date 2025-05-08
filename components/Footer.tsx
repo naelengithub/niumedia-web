@@ -16,7 +16,7 @@ const navigation = {
   main: [
     { name: "Inicio", href: "/" },
     { name: "Servicios", href: "#servicios" },
-    // { name: "Proyectos", href: "/proyectos" },
+    { name: "Proyectos", href: "/proyectos" },
     { name: "Colaboradores", href: "#colaboradores" },
     { name: "Contacto", href: "/contacto" },
   ] as NavigationItem[],

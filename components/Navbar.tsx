@@ -57,6 +57,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
           >
             Colaboradores
           </button>
+          <Link href="/projects">Proyectos</Link>
           <Link href="#contacto">Contacto</Link>
         </div>
 
