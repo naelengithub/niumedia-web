@@ -29,7 +29,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="absolute -top-50 lg:-top-60 right-0 md:right-40 lg:right-60 -z-10 w-[70vw] md:w-[40vw] lg:w-[30vw] pointer-events-none"
+          className="absolute -top-70 sm:-top-110 md:-top-70 lg:-top-60 right-0 md:right-40 lg:right-60 -z-10 w-[70vw] md:w-[40vw] lg:w-[30vw] pointer-events-none"
         >
           <Image
             src="/images/im2.png"
