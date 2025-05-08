@@ -17,16 +17,15 @@ export default function Home() {
         <SplashScreen onFinished={() => setShowSplash(false)} />
       ) : (
         <div>
-          {/* Scroll-animated logo section */}
-          <Hero />
-          {/* Spacer to prevent overlap */}
-          <div className="h-[20vh]" />
-          {/* Image + text section */}
-          <About />
+          <div className="bg-gradient-to-t from-[#c6dbfa] to-white">
+            <Hero />
+            {/* Spacer to prevent overlap */}
+            <div className="h-[20vh]" />
+          </div>
+          <About className="bg-gradient-to-t from-[#c6dbfa]/40 to-[#c6dbfa]" />
           <Services id="servicios" />
           <ScrollScaleText text="Colaboramos" id="colaboradores" />
           <Contact id="contacto" />
-          {/* <div className="h-screen bg-pink-100"></div> */}
         </div>
       )}
     </div>

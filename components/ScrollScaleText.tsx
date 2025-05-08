@@ -8,7 +8,6 @@ interface ScrollScaleTextProps {
   id?: string;
 }
 
-// Array of logo image paths
 const clientLogos = Array.from(
   { length: 10 },
   (_, i) => `/client-logos/logo${i}.svg`
@@ -31,14 +30,12 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
       const { top, height } = sectionEl.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Track progress through the section (0 at top, 1 at bottom)
       const progress = Math.min(
         1,
         Math.max(0, 1 - (top + height - windowHeight) / height)
       );
       setScrollProgress(progress);
 
-      // Font scaling logic
       const SCALE_START = windowHeight;
       const SCALE_DURATION = 300;
       const MIN_FONT = 4;
@@ -54,7 +51,6 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
       const fontSize = MIN_FONT + scaleProgress * (MAX_FONT - MIN_FONT);
       setFontSizeVW(fontSize);
 
-      // Dynamically calculate max allowed translateX based on container padding
       const containerLeft = sectionEl.getBoundingClientRect().left;
       const containerPaddingLeft = parseFloat(
         getComputedStyle(sectionEl).paddingLeft || "0"
@@ -83,13 +79,27 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [showSubtitle]);
 
+  // Define scattered positions for logos
+  const positions = [
+    { top: "0%", left: "10%" },
+    { top: "10%", left: "60%" },
+    { top: "25%", right: "5%" },
+    { bottom: "40%", right: "0%" },
+    { top: "35%", left: "20%" },
+    { bottom: "20%", left: "5%" },
+    { top: "50%", right: "35%" },
+    { bottom: "10%", left: "30%" },
+    { bottom: "20%", right: "20%" },
+    { top: "25%", left: "40%" },
+  ];
+
   return (
     <section
-      className="relative h-[300vh] bg-gradient-to-tl from-[#006881] to-[#3767ba] text-white"
+      className="relative h-[300vh] bg-gradient-to-tl from-[#006881] to-[#3767ba] text-white px-12"
       ref={sectionRef}
       id={id}
     >
-      <div className="sticky top-0 h-screen flex flex-col justify-center items-end p-6 md:py-24 overflow-hidden">
+      <div className="sticky top-0 h-screen flex flex-col justify-center items-end py-6 md:py-24 overflow-hidden">
         {/* Main text */}
         <p
           ref={textRef}
@@ -113,41 +123,32 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
           con las mejores marcas
         </p>
 
-        {/* Scattered brand logos with scroll-triggered reveal */}
-        <div className="relative w-full h-[300px] mt-12">
+        {/* Scattered logos */}
+        <div className="relative w-full h-[600px] sm:h-[500px] mt-12">
           {clientLogos.map((src, index) => {
-            const positions = [
-              { top: "0%", left: "10%" },
-              { top: "10%", right: "10%" },
-              { bottom: "30%", left: "15%" },
-              { top: "5%", left: "50%" },
-              { bottom: "10%", right: "10%" },
-              { top: "15%", left: "30%" },
-              { bottom: "20%", left: "60%" },
-              { top: "20%", right: "25%" },
-              { top: "90%", left: "5%" },
-              { bottom: "0%", left: "35%" },
-            ];
+            const isMobileHidden = index >= 6 ? "hidden sm:block" : "";
+            const visible = scrollProgress > index / clientLogos.length;
 
             const style = {
               position: "absolute" as const,
               ...positions[index % positions.length],
               transition: "opacity 0.6s ease, transform 0.6s ease",
-              opacity: scrollProgress > index / clientLogos.length ? 1 : 0,
-              transform:
-                scrollProgress > index / clientLogos.length
-                  ? "translateY(0)"
-                  : "translateY(20px)",
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(20px)",
             };
 
             return (
-              <div key={index} style={style}>
+              <div
+                key={index}
+                style={style}
+                className={`flex justify-center items-center ${isMobileHidden}`}
+              >
                 <Image
                   src={src}
                   alt={`Brand ${index + 1}`}
-                  width={120}
-                  height={60}
-                  style={{ objectFit: "contain" }}
+                  width={90}
+                  height={80}
+                  className="object-contain"
                 />
               </div>
             );

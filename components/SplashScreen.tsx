@@ -8,6 +8,7 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [startExitAnimation, setStartExitAnimation] = useState(false);
   const [startFadeOut, setStartFadeOut] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const moveTimer = setTimeout(() => {
@@ -29,6 +30,19 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
       clearTimeout(finalTimer);
     };
   }, [onFinished]);
+
+  function useIsMobile(breakpoint = 768) {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const checkMobile = () => setIsMobile(window.innerWidth < breakpoint);
+      checkMobile();
+      window.addEventListener("resize", checkMobile);
+      return () => window.removeEventListener("resize", checkMobile);
+    }, [breakpoint]);
+
+    return isMobile;
+  }
 
   return (
     <>
@@ -84,7 +98,7 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
                 startExitAnimation
                   ? {
                       top: "1rem", // py-8 always
-                      left: "1.5rem", // px-6 mobile
+                      left: isMobile ? "1.5rem" : "3rem", // px-6 mobile
                       x: "0%",
                       y: "0%",
                       scale: 1,

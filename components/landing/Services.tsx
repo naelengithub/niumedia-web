@@ -96,27 +96,31 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
         </div>
       </div>
 
-      {/* === Mobile Version: Sticky Stack Scroll === */}
+      {/* === Mobile Version: Sticky Stack, No Scroll Inside === */}
       <div className="md:hidden relative h-[400vh] w-full">
         {services.map((service, index) => (
           <div
             key={index}
-            className="sticky top-0 h-screen w-full flex flex-col items-center justify-center bg-pink-100"
+            className="sticky top-0 h-screen w-full flex flex-col bg-white"
             style={{ zIndex: index + 1 }}
           >
-            <div className="relative w-full h-full sm:h-96">
+            {/* Image fills remaining space */}
+            <div className="flex-1 relative w-full">
               <Image
                 src={service.image}
                 alt={service.alt || `Service ${index + 1}`}
                 fill
                 className="object-cover"
                 priority
+                sizes="100vw"
               />
             </div>
-            <div className="w-full p-6 bg-white min-h-[40vh] border-t border-black">
+
+            {/* Text always fits in viewport */}
+            <div className="w-full p-6 bg-white border-t border-black min-h-[45vh]">
               <div className="text-4xl font-bold mb-4">{index + 1}</div>
               <h2 className="text-xl font-bold mb-2">{service.name}</h2>
-              <div className="text-base leading-relaxed prose">
+              <div className="text-base leading-relaxed prose pb-2">
                 <PortableText value={service.content} />
               </div>
             </div>

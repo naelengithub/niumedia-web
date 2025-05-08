@@ -2,9 +2,14 @@
 
 import Image from "next/image";
 
-export default function About() {
+interface AboutProps {
+  className?: string;
+}
+
+export default function About(props: AboutProps) {
+  const { className } = props;
   return (
-    <section className="p-8 md:p-12">
+    <section className={`${className} p-8 md:p-12`}>
       <div className="text-xl leading-8 md:text-6xl md:leading-16">
         <div className="flex items-end gap-4 lg:justify-center">
           <Image
