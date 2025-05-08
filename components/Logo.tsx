@@ -1,8 +1,10 @@
 type LogoProps = {
   tone?: "color" | "light" | "dark";
+  className?: string;
 };
 
-export default function Logo({ tone = "color" }: LogoProps) {
+export default function Logo(props: LogoProps) {
+  const { tone, className } = props;
   const getColor = (color: string) => {
     if (tone === "dark") return "bg-black";
     if (tone === "light") return "bg-white";
@@ -12,7 +14,9 @@ export default function Logo({ tone = "color" }: LogoProps) {
   const colors = ["bg-cyan-800", "bg-cyan-400", "bg-cyan-800", "bg-cyan-200"];
 
   return (
-    <div className="flex items-center justify-center w-fit mix-blend-difference">
+    <div
+      className={`${className} flex items-center justify-center w-fit mix-blend-difference`}
+    >
       <div className="grid grid-cols-4 grid-rows-2 gap-1 w-16 h-8">
         <div className={getColor(colors[0]) + " col-span-1 row-span-1"} />
         <div className={getColor(colors[1]) + " col-span-2 row-span-1"} />
