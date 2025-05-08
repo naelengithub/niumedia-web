@@ -85,7 +85,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
 
       {/* Slide-in Mobile Menu */}
       <div
-        className={`fixed top-0 left-0 w-full h-full z-40 bg-[#8dd2ec] backdrop-blur-md text-white transition-transform duration-500 ease-in-out
+        className={`fixed top-0 left-0 w-full h-full z-40 bg-[#8dd2ec] backdrop-blur-md text-white transition-transform duration-500 ease-in-out md:hidden
           ${isOpen ? "translate-y-0" : "-translate-y-full"}
         `}
       >
