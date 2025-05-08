@@ -17,7 +17,35 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    getServices().then(setServices);
+    const fetchServices = async () => {
+      const cacheKey = "services_cache";
+      const cached = localStorage.getItem(cacheKey);
+
+      if (cached) {
+        try {
+          const { services: cachedServices, timestamp } = JSON.parse(cached);
+          const oneDay = 24 * 60 * 60 * 1000;
+          const now = Date.now();
+
+          if (now - timestamp < oneDay) {
+            setServices(cachedServices);
+            return;
+          }
+        } catch (error) {
+          console.warn("Corrupted services cache. Refetching...", error);
+          localStorage.removeItem(cacheKey);
+        }
+      }
+
+      const data = await getServices();
+      setServices(data);
+      localStorage.setItem(
+        cacheKey,
+        JSON.stringify({ services: data, timestamp: Date.now() })
+      );
+    };
+
+    fetchServices();
   }, []);
 
   useEffect(() => {
