@@ -20,6 +20,20 @@ const projects = {
       type: "number",
     },
     {
+      name: "client",
+      title: "Client",
+      type: "string",
+    },
+    {
+      name: "services",
+      title: "Services",
+      type: "array",
+      of: [{ type: "string" }],
+      options: {
+        layout: "tags",
+      },
+    },
+    {
       name: "image",
       title: "Image",
       type: "image",
@@ -32,7 +46,6 @@ const projects = {
         },
       ],
     },
-
     {
       name: "content",
       title: "Description",

@@ -23,11 +23,16 @@ export async function getServices(): Promise<Service[]> {
 export async function getProjects(): Promise<Project[]> {
   return client.fetch(
     groq`*[_type == "projects"] | order(_createdAt asc) {
-        name,
-        "slug": slug.current,
-        "image": image.asset->url,
-        "alt": image.alt,
-        content
-      }`
+      _id,
+      _createdAt,
+      name,
+      year,
+      client,
+      services,
+      "slug": slug.current,
+      "image": image.asset->url,
+      "alt": image.alt,
+      content
+    }`
   );
 }
