@@ -17,12 +17,12 @@ export default function Home() {
         <SplashScreen onFinished={() => setShowSplash(false)} />
       ) : (
         <div>
-          <div className="bg-gradient-to-t from-[#c6dbfa] to-white">
+          <div className="bg-gradient-to-t from-[#084152] to-[#084152]/90">
             <Hero />
             {/* Spacer to prevent overlap */}
             <div className="h-[20vh]" />
           </div>
-          <About className="bg-gradient-to-t from-[#c6dbfa]/40 to-[#c6dbfa]" />
+          <About className="bg-gradient-to-t from-[#084152] to-[#084152] text-white" />
           <Services id="servicios" />
           <ScrollScaleText text="Colaboramos" id="colaboradores" />
           <Contact id="contacto" />

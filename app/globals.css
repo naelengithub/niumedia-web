@@ -3,6 +3,10 @@
   --foreground: #171717;
   --bg-dark-blue: #084254;
   --bg-light-blue: #006881;
+  --niu01: #0f7d9e;
+  --niu02: #00b1da;
+  --niu03: #aedee4;
+  --niu04: #084152;
 }
 
 @import "tailwindcss";

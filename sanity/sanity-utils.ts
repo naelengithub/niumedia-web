@@ -1,4 +1,5 @@
 import { Service } from "@/types/Service";
+import { Project } from "@/types/Project";
 import { createClient, groq } from "next-sanity";
 import clientConfig from "./config/client-config";
 
@@ -15,5 +16,23 @@ export async function getServices(): Promise<Service[]> {
         "alt": image.alt,
         content
       }`
+  );
+}
+
+// Fetch all projects
+export async function getProjects(): Promise<Project[]> {
+  return client.fetch(
+    groq`*[_type == "projects"] | order(_createdAt asc) {
+      _id,
+      _createdAt,
+      name,
+      year,
+      client,
+      services,
+      "slug": slug.current,
+      "image": image.asset->url,
+      "alt": image.alt,
+      content
+    }`
   );
 }

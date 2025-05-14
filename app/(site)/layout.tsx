@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-neue">
-        <Navbar className="text-white mix-blend-difference" />
+        <Navbar className="" />
         {children}
       </body>
     </html>

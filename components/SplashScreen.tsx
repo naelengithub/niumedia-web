@@ -115,7 +115,7 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
                   ? "opacity 0.6s ease-in-out"
                   : undefined,
               }}
-              className="w-12 h-6"
+              className="w-16 h-8"
             >
               <AnimatedLogo />
             </motion.div>
