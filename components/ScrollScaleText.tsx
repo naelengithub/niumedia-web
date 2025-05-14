@@ -79,20 +79,6 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [showSubtitle]);
 
-  // Define scattered positions for logos
-  const positions = [
-    { top: "0%", left: "10%" },
-    { top: "10%", left: "60%" },
-    { top: "25%", right: "5%" },
-    { bottom: "40%", right: "0%" },
-    { top: "35%", left: "20%" },
-    { bottom: "20%", left: "5%" },
-    { top: "50%", right: "35%" },
-    { bottom: "10%", left: "30%" },
-    { bottom: "20%", right: "20%" },
-    { top: "25%", left: "40%" },
-  ];
-
   return (
     <section
       className="relative h-[300vh] bg-gradient-to-tl from-[#006881] to-[#3767ba] text-white px-12"
@@ -123,36 +109,63 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
           con las mejores marcas
         </p>
 
-        {/* Scattered logos */}
-        <div className="relative w-full h-[600px] sm:h-[500px] mt-12">
-          {clientLogos.map((src, index) => {
-            const isMobileHidden = index >= 6 ? "hidden sm:block" : "";
-            const visible = scrollProgress > index / clientLogos.length;
+        {/* Logos grid */}
+        <div className="relative md:mt-12 w-full px-4">
+          {/* Mobile: stacked zigzag center layout */}
+          <div className="grid grid-cols-2 gap-6 sm:hidden mt-6 px-4">
+            {clientLogos.map((src, index) => {
+              const groupIndex = Math.floor(index / 2);
+              const maxGroup = Math.floor(
+                (scrollProgress * clientLogos.length) / 2 + 1
+              ); // ensure at least 2 columns show early
+              const isVisible = groupIndex <= maxGroup;
 
-            const style = {
-              position: "absolute" as const,
-              ...positions[index % positions.length],
-              transition: "opacity 0.6s ease, transform 0.6s ease",
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : "translateY(20px)",
-            };
+              return (
+                <div
+                  key={index}
+                  style={{ transitionDelay: `${index * 80}ms` }}
+                  className={`flex justify-center items-center transition-all duration-500 ease-out transform ${
+                    isVisible
+                      ? "opacity-100 scale-100 translate-y-0"
+                      : "opacity-0 scale-90 translate-y-6 pointer-events-none"
+                  }`}
+                >
+                  <Image
+                    src={src}
+                    alt={`Brand ${index + 1}`}
+                    width={70}
+                    height={60}
+                    className="object-contain w-[60px] hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              );
+            })}
+          </div>
 
-            return (
-              <div
-                key={index}
-                style={style}
-                className={`flex justify-center items-center ${isMobileHidden}`}
-              >
-                <Image
-                  src={src}
-                  alt={`Brand ${index + 1}`}
-                  width={90}
-                  height={80}
-                  className="object-contain"
-                />
-              </div>
-            );
-          })}
+          {/* Tablet and up: full grid with fade-in on scroll */}
+          <div className="hidden sm:grid sm:grid-cols-3 md:grid-cols-5 gap-6">
+            {clientLogos.map((src, index) => {
+              const visible = scrollProgress > index / clientLogos.length;
+              return (
+                <div
+                  key={index}
+                  className={`flex justify-center items-center transition-all duration-500 ease-out transform ${
+                    visible
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-4"
+                  }`}
+                >
+                  <Image
+                    src={src}
+                    alt={`Brand ${index + 1}`}
+                    width={70}
+                    height={60}
+                    className="object-contain sm:w-[80px] md:w-[90px]"
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

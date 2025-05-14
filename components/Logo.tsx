@@ -11,17 +11,22 @@ export default function Logo(props: LogoProps) {
     return color;
   };
 
-  const colors = ["bg-cyan-800", "bg-cyan-400", "bg-cyan-800", "bg-cyan-200"];
+  const colors = [
+    "bg-[#0f7d9e]",
+    "bg-[#00b1da]",
+    "bg-[#084152]",
+    "bg-[#aedee4]",
+  ];
 
   return (
     <div
       className={`${className} flex items-center justify-center w-fit mix-blend-difference`}
     >
-      <div className="grid grid-cols-4 grid-rows-2 gap-1 w-16 h-8">
+      <div className="grid grid-cols-6 grid-rows-2 gap-0.5 w-16 h-8">
         <div className={getColor(colors[0]) + " col-span-1 row-span-1"} />
-        <div className={getColor(colors[1]) + " col-span-2 row-span-1"} />
-        <div className={getColor(colors[2]) + " col-span-1 row-span-2"} />
-        <div className={getColor(colors[3]) + " col-span-3 row-span-1"} />
+        <div className={getColor(colors[1]) + " col-span-3 row-span-1"} />
+        <div className={getColor(colors[2]) + " col-span-2 row-span-2"} />
+        <div className={getColor(colors[3]) + " col-span-4 row-span-1"} />
       </div>
     </div>
   );

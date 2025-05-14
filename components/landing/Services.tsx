@@ -160,3 +160,5 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
 };
 
 export default ServicesScrollFirst;
+
+export const revalidate = 86400;
