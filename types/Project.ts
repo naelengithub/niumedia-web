@@ -10,4 +10,9 @@ export type Project = {
   content: PortableTextBlock[];
   client?: string;
   services?: string[];
+  year: number;
+  additionalImages?: {
+    url: string;
+    alt?: string;
+  }[];
 };

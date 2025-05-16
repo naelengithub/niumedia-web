@@ -52,6 +52,24 @@ const projects = {
       type: "array",
       of: [{ type: "block" }],
     },
+    {
+      name: "additionalImages",
+      title: "Additional Images",
+      type: "array",
+      of: [
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            {
+              name: "alt",
+              title: "Alt Text",
+              type: "string",
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
 

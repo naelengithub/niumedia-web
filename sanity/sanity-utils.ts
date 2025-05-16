@@ -32,7 +32,11 @@ export async function getProjects(): Promise<Project[]> {
       "slug": slug.current,
       "image": image.asset->url,
       "alt": image.alt,
-      content
+      content,
+      additionalImages[]{
+        "url": asset->url,
+        alt
+      }
     }`
   );
 }
