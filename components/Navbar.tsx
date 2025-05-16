@@ -51,7 +51,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
         {/* Desktop Nav */}
         <div
           className={`hidden md:flex gap-8 text-sm uppercase tracking-widest font-medium ${
-            isProjectsPage ? "text-black" : "text-white mix-blend-difference"
+            isProjectsPage ? "text-white" : "text-white mix-blend-difference"
           }`}
         >
           <Link href="/">Inicio</Link>

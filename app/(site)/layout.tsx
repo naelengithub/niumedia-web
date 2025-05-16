@@ -3,7 +3,7 @@ import "@/app/globals.css";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "Niumedia",
+  title: "Niumedia Networks",
   description: "Niumedia",
 };
 

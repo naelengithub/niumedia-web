@@ -8,4 +8,5 @@ export type Service = {
   slug: string;
   alt: string;
   content: PortableTextBlock[];
+  serviceList: string[];
 };

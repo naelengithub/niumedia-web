@@ -7,6 +7,7 @@
   --niu02: #00b1da;
   --niu03: #aedee4;
   --niu04: #084152;
+  --niu05: #03caff;
 }
 
 @import "tailwindcss";
@@ -167,4 +168,17 @@ body {
       transform: scale(1);
     }
   }
+}
+
+@keyframes fade-in-start {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-start {
+  animation: fade-in-start 0.5s ease-out forwards;
 }

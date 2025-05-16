@@ -21,9 +21,9 @@ export default function Projects({ projects }: ProjectsProps) {
   const services = activeProject?.services ?? [];
 
   return (
-    <div className="h-screen w-full flex bg-white">
+    <div className="h-screen w-full flex relative">
       {/* LEFT SIDEBAR */}
-      <aside className="w-[20%] bg-gray-100 relative flex justify-end">
+      <aside className="w-[20%] relative flex justify-end">
         <div className="overflow-y-scroll h-full w-full flex flex-col justify-around px-6 md:px-12 space-y-3 py-24">
           {projects.map((proj, i) => {
             const isActive = i === activeIndex;
@@ -32,8 +32,8 @@ export default function Projects({ projects }: ProjectsProps) {
                 key={proj._id}
                 className={`project-item relative flex items-center gap-2 text-right cursor-pointer pr-2 ${
                   isActive
-                    ? "font-bold text-black text-base pl-2 -ml-1"
-                    : "text-gray-500 text-sm"
+                    ? "font-bold text-[#03caff] text-base pl-2 -ml-1"
+                    : "text-gray-300 text-sm"
                 }`}
                 onClick={() => setActiveIndex(i)}
               >
@@ -45,7 +45,7 @@ export default function Projects({ projects }: ProjectsProps) {
       </aside>
 
       {/* RIGHT CONTENT */}
-      <main className="w-[80%] h-full overflow-y-auto p-12 pt-24 relative">
+      <main className="w-[80%] h-full overflow-y-auto p-12 pt-24 relative bg-gradient-to-r from-transparent to-[#084152]">
         <AnimatePresence mode="wait">
           {activeProject && (
             <motion.div
@@ -56,17 +56,30 @@ export default function Projects({ projects }: ProjectsProps) {
               transition={{ duration: 0.4 }}
             >
               {/* Title */}
-              <h1 className="text-4xl font-bold text-left w-full z-50">
+              <h1 className="text-[7vw] font-bold text-left w-full z-50 text-[#03caff]">
                 {activeProject.name}
               </h1>
 
-              <div className="max-w-4xl ml-auto flex flex-col space-y-8 mt-20">
-                {/* Services */}
-                {services.length > 0 && (
-                  <h2 className="text-sm text-gray-500 text-right">
-                    {services.join(" | ")}
-                  </h2>
-                )}
+              <div className="ml-auto flex flex-col space-y-8 mt-20">
+                <div className="flex justify-between">
+                  {/* Services */}
+                  {services.length > 0 && (
+                    <h2 className="text-gray-300 font-medium text-right">
+                      {services.join("  |  ")}
+                    </h2>
+                  )}
+                  <div className="flex gap-2 items-center text-[#03caff]">
+                    <h2>Scroll Down</h2>
+                    <Image
+                      src="/svg/flecha_scroll_down.svg"
+                      alt="Scroll down"
+                      width={20}
+                      height={20}
+                      className="object-fit max-width: 24px"
+                    />
+                  </div>
+                </div>
+
                 {/* Image */}
                 <div className="aspect-video relative w-full bg-gray-300">
                   <Image
@@ -79,12 +92,56 @@ export default function Projects({ projects }: ProjectsProps) {
                 </div>
 
                 {/* Content */}
-                <div className="text-sm text-gray-700 text-right whitespace-pre-wrap">
+                <div className="text-sm text-gray-300 text-right whitespace-pre-wrap">
                   {activeProject.content?.length > 0 ? (
                     <PortableText value={activeProject.content} />
                   ) : (
                     "Sin descripción."
                   )}
+                </div>
+
+                {/* Data */}
+                <div className="flex flex-col gap-4">
+                  <div className="flex w-full justify-between text-gray-300 border-b-1 border-gray-500 pb-4">
+                    <h2>Año</h2>
+                    <h2 className="text-[#03caff]">{activeProject.year}</h2>
+                  </div>
+                  <div className="flex w-full justify-between text-gray-300 border-b-1 border-gray-500 pb-4">
+                    <h2>Cliente</h2>
+                    <h2 className="text-[#03caff]">{activeProject.client}</h2>
+                  </div>
+                  <div className="flex w-full justify-between text-gray-300 border-b-1 border-gray-500 pb-4">
+                    <h2>Servicios</h2>
+                    <h2 className="text-[#03caff]">{services.join(" | ")}</h2>
+                  </div>
+                  {Array.isArray(activeProject.additionalImages) &&
+                    activeProject.additionalImages.length > 0 && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                        {activeProject.additionalImages.map((img, idx) => (
+                          <div
+                            key={idx}
+                            className="w-full h-[300px] flex items-center justify-center"
+                          >
+                            <Image
+                              src={img.url}
+                              alt={img.alt || `Imagen adicional ${idx + 1}`}
+                              width={800}
+                              height={600}
+                              className="object-contain h-full w-auto"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  <div className="w-full flex justify-center mt-40">
+                    <Image
+                      src="svg/circulo_azul.svg"
+                      alt={activeProject.alt || activeProject.name}
+                      width={80}
+                      height={80}
+                      className="object-fit max-w-32"
+                    />
+                  </div>
                 </div>
               </div>
             </motion.div>

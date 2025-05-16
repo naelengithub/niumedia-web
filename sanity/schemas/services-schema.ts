@@ -27,12 +27,17 @@ const services = {
         },
       ],
     },
-
     {
       name: "content",
       title: "Description",
       type: "array",
       of: [{ type: "block" }],
+    },
+    {
+      name: "serviceList",
+      title: "Service List",
+      type: "array",
+      of: [{ type: "string" }],
     },
   ],
 };
