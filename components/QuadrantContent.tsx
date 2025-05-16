@@ -54,9 +54,9 @@ export default function QuadrantContent({
         {showTitle && (
           <h2
             className={`
-              text-xl md:text-3xl font-bold text-center whitespace-nowrap transition-transform duration-500
-              ${isVertical ? "rotate-90 origin-center" : ""}
-            `}
+         text-lg md:text-3xl text-center transition-transform duration-500
+         ${isVertical ? "rotate-90 origin-center whitespace-nowrap" : "break-words leading-tight max-w-xs md:max-w-sm"}
+       `}
           >
             {title}
           </h2>

@@ -20,8 +20,13 @@ export default function ServiceGrid({ services }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updateSize = () =>
-      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    const updateSize = () => {
+      if (containerRef.current) {
+        const { offsetWidth, offsetHeight } = containerRef.current;
+        setDimensions({ width: offsetWidth, height: offsetHeight });
+      }
+    };
+
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
@@ -128,7 +133,7 @@ export default function ServiceGrid({ services }: Props) {
   return (
     <div
       ref={containerRef}
-      className="w-screen h-screen relative overflow-hidden touch-manipulation bg-[#084254] border-y border-[#00b1da]"
+      className="w-screen h-[80vh] relative overflow-hidden touch-manipulation bg-[#084254] border-y border-[#00b1da]"
     >
       {services.slice(0, 4).map((service, i) => {
         const id = quadrantOrder[i];
