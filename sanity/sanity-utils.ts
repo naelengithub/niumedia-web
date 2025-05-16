@@ -6,16 +6,23 @@ import clientConfig from "./config/client-config";
 // Define client once to avoid re-creating it in every function
 const client = createClient(clientConfig);
 
-// Fetch all services
+// Fetch all sevices
 export async function getServices(): Promise<Service[]> {
-  return client.fetch(
-    groq`*[_type == "services"] | order(_createdAt asc) {
-        name,
-        "slug": slug.current,
-        "image": image.asset->url,
-        "alt": image.alt,
-        content
-      }`
+  return client.fetch<Service[]>(
+    `*[_type == "services"] | order(_createdAt asc) {
+      _id,
+      _createdAt,
+      name,
+      "slug": slug.current,
+      "image": image.asset->url,
+      "alt": image.alt,
+      content,
+      serviceList
+    }`,
+    {},
+    {
+      next: { revalidate: 86400 }, // ✅ once per day
+    }
   );
 }
 
