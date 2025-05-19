@@ -8,7 +8,8 @@ import { Service } from "@/types/Service";
 type QuadrantId = "tl" | "tr" | "bl" | "br";
 
 interface Props {
-  services: Service[]; // now passed in
+  services: Service[];
+  id?: string;
 }
 
 const quadrantOrder: QuadrantId[] = ["tl", "tr", "bl", "br"];
@@ -133,6 +134,7 @@ export default function ServiceGrid({ services }: Props) {
   return (
     <div
       ref={containerRef}
+      id="servicios"
       className="w-screen h-[80vh] relative overflow-hidden touch-manipulation bg-[#084254] border-y border-[#00b1da]"
     >
       {services.slice(0, 4).map((service, i) => {
