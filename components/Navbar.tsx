@@ -58,13 +58,14 @@ export default function Navbar({ className = "" }: NavbarProps) {
           {!isProjectsPage && (
             <>
               <Link href="#servicios">Servicios</Link>
+              <Link href="#proyectos">Proyectos</Link>
               <button
                 onClick={handleColabClick}
                 className="uppercase hover:cursor-pointer"
               >
                 Colaboradores
               </button>
-              <Link href="/projects">Proyectos</Link>
+
               <Link href="#contacto">Contacto</Link>
             </>
           )}

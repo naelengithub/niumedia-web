@@ -18,11 +18,7 @@ export async function getServices(): Promise<Service[]> {
       "alt": image.alt,
       content,
       serviceList
-    }`,
-    {},
-    {
-      next: { revalidate: 86400 }, // ✅ once per day
-    }
+    }`
   );
 }
 

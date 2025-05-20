@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import SoftOrbit from "../three/SoftOrbit";
 
 export default function Hero() {
   const [scrollY, setScrollY] = useState(0);
@@ -18,9 +18,9 @@ export default function Hero() {
 
   return (
     <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 overflow-hidden pb-24 text-white">
-      {/* Animated soft radial background glow */}
+      {/* 🔆 Glow Background */}
       <motion.div
-        className="absolute inset-0 z-[-20] flex items-center justify-center"
+        className="absolute inset-0 z-[-30] flex items-center justify-center"
         initial={{ opacity: 0.12 }}
         animate={{ y: [0, -2, 0, 2, 0] }}
         transition={{
@@ -42,30 +42,27 @@ export default function Hero() {
         </svg>
       </motion.div>
 
-      <div
+      {/* 🌀 Animated entry for SoftOrbit */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 1.2,
+          delay: 0.6,
+          ease: [0.33, 1, 0.68, 1],
+        }}
+        className="absolute z-[-20] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px]"
+      >
+        <SoftOrbit />
+      </motion.div>
+
+      {/* 🔠 Scrolling text content only */}
+      <motion.div
         className="relative flex flex-col items-center text-center space-y-6 transition-transform duration-200 ease-out origin-bottom"
         style={{
           transform: `scale(${scale}) translateY(-${translateY}px)`,
         }}
       >
-        {/* Animated Image first */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="absolute -top-70 sm:-top-110 md:-top-70 lg:-top-60 right-0 md:right-40 lg:right-60 -z-10 w-[70vw] md:w-[40vw] lg:w-[30vw] pointer-events-none"
-        >
-          <Image
-            src="/images/im2.png"
-            width={800}
-            height={800}
-            alt="Esfera abstracta"
-            className="w-full h-auto"
-            priority
-          />
-        </motion.div>
-
-        {/* Then fade+pop the text in */}
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -83,7 +80,8 @@ export default function Hero() {
             ))}
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
+

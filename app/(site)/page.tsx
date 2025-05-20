@@ -17,8 +17,10 @@ export default async function Home() {
         <div className="h-[20vh]" />
       </div>
       <About className="bg-gradient-to-t from-[#084152] to-[#084152] text-white" />
-      <ServiceGrid services={services} /> {/* ✅ real services passed in */}
-      <Services id="servicios" />
+      <div id="servicios">
+        <ServiceGrid services={services} />
+      </div>
+      <Services id="proyectos" />
       <ScrollScaleText text="Colaboramos" id="colaboradores" />
       <Contact id="contacto" />
     </SplashWrapper>

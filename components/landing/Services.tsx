@@ -3,49 +3,50 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { getServices } from "@/sanity/sanity-utils";
-import { Service } from "@/types/Service";
+import { getProjects } from "@/sanity/sanity-utils";
+import { Project } from "@/types/Project";
 import { PortableText } from "@portabletext/react";
+import Link from "next/link";
 
-interface ServicesProps {
+interface ProjectsProps {
   id?: string;
 }
 
-const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
-  const [services, setServices] = useState<Service[]>([]);
+const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
+  const [projects, setProjects] = useState<Project[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchServices = async () => {
-      const cacheKey = "services_cache";
+    const fetchProjects = async () => {
+      const cacheKey = "projects_cache";
       const cached = localStorage.getItem(cacheKey);
 
       if (cached) {
         try {
-          const { services: cachedServices, timestamp } = JSON.parse(cached);
+          const { projects: cachedProjects, timestamp } = JSON.parse(cached);
           const oneDay = 24 * 60 * 60 * 1000;
           const now = Date.now();
 
           if (now - timestamp < oneDay) {
-            setServices(cachedServices);
+            setProjects(cachedProjects);
             return;
           }
         } catch (error) {
-          console.warn("Corrupted services cache. Refetching...", error);
+          console.warn("Corrupted projects cache. Refetching...", error);
           localStorage.removeItem(cacheKey);
         }
       }
 
-      const data = await getServices();
-      setServices(data);
+      const data = await getProjects();
+      setProjects(data);
       localStorage.setItem(
         cacheKey,
-        JSON.stringify({ services: data, timestamp: Date.now() })
+        JSON.stringify({ projects: data, timestamp: Date.now() })
       );
     };
 
-    fetchServices();
+    fetchProjects();
   }, []);
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
 
     sections.forEach((section) => observer.observe(section));
     return () => sections.forEach((section) => observer.unobserve(section));
-  }, [services]);
+  }, [projects]);
 
   return (
     <div className="w-full" id={id}>
@@ -76,10 +77,10 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
         ref={containerRef}
       >
         {/* LEFT SIDE */}
-        {services.length > 0 && (
+        {projects.length > 0 && (
           <div className="w-2/5 h-screen sticky top-0 flex-col justify-center p-12 border-r border-black bg-white overflow-hidden">
             <p className="text-sm mb-4 mt-24 tracking-wide">
-              NUESTROS SERVICIOS
+              NUESTROS PROYECTOS
             </p>
             <AnimatePresence mode="wait">
               <motion.div
@@ -89,13 +90,28 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
                 exit={{ y: -20, opacity: 0 }}
                 transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
               >
-                <div className="text-7xl font-bold mb-6">{activeIndex + 1}</div>
-                <h2 className="text-2xl font-bold mb-4">
-                  {services[activeIndex].name}
+                <h2 className="text-7xl font-bold mb-1">
+                  {projects[activeIndex].name}
                 </h2>
-                <div className="text-base max-w-sm leading-relaxed prose">
-                  <PortableText value={services[activeIndex].content} />
+                {/* Services */}
+                {projects.length > 0 && (
+                  <h2 className="text-gray-900 font-medium">
+                    {projects[activeIndex]?.services?.join("  |  ")}
+                  </h2>
+                )}
+
+                <div className="text-sm mb-2 text-gray-500">
+                  {projects[activeIndex].client} — {projects[activeIndex].year}
                 </div>
+                <div className="text-base max-w-sm pb-4 leading-relaxed prose">
+                  <PortableText value={projects[activeIndex].content} />
+                </div>
+                <Link
+                  href="/projects"
+                  className="px-4 py-2 mt-12 bg-[#aedee4] rounded-2xl"
+                >
+                  Ver todos
+                </Link>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -103,7 +119,7 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
 
         {/* RIGHT SIDE */}
         <div className="w-3/5">
-          {services.map((service, index) => (
+          {projects.map((project, index) => (
             <section
               key={index}
               data-index={index}
@@ -111,8 +127,8 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
             >
               <div className="relative w-full h-full">
                 <Image
-                  src={service.image}
-                  alt={service.alt || `Service ${index + 1}`}
+                  src={project.image}
+                  alt={project.alt || `Project ${index + 1}`}
                   fill
                   sizes="100vw"
                   className="object-cover"
@@ -124,19 +140,18 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
         </div>
       </div>
 
-      {/* === Mobile Version: Sticky Stack, No Scroll Inside === */}
+      {/* === Mobile Version === */}
       <div className="md:hidden relative h-[400vh] w-full">
-        {services.map((service, index) => (
+        {projects.map((project, index) => (
           <div
             key={index}
             className="sticky top-0 h-screen w-full flex flex-col bg-white"
             style={{ zIndex: index + 1 }}
           >
-            {/* Image fills remaining space */}
             <div className="flex-1 relative w-full">
               <Image
-                src={service.image}
-                alt={service.alt || `Service ${index + 1}`}
+                src={project.image}
+                alt={project.alt || `Project ${index + 1}`}
                 fill
                 className="object-cover"
                 priority
@@ -144,12 +159,13 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
               />
             </div>
 
-            {/* Text always fits in viewport */}
             <div className="w-full p-6 bg-white border-t border-black min-h-[45vh]">
-              <div className="text-4xl font-bold mb-4">{index + 1}</div>
-              <h2 className="text-xl font-bold mb-2">{service.name}</h2>
+              <h2 className="text-xl font-bold mb-1">{project.name}</h2>
+              <div className="text-sm text-gray-500 mb-2">
+                {project.client} — {project.year}
+              </div>
               <div className="text-base leading-relaxed prose pb-2">
-                <PortableText value={service.content} />
+                <PortableText value={project.content} />
               </div>
             </div>
           </div>
@@ -159,6 +175,6 @@ const ServicesScrollFirst: React.FC<ServicesProps> = ({ id }) => {
   );
 };
 
-export default ServicesScrollFirst;
+export default ProjectsScroll;
 
 export const revalidate = 86400;
