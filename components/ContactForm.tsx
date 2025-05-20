@@ -8,6 +8,7 @@ import Footer from "./Footer";
 
 const DynamicP5Sketch = dynamic(() => import("./canvases/bubbles"), {
   ssr: false,
+  loading: () => null,
 });
 
 interface ContactProps {
