@@ -6,7 +6,6 @@ import Contact from "@/components/ContactForm";
 //import ServiceGrid from "@/components/ServiceGrid";
 import SplashWrapper from "@/components/SplashScreenWrapper";
 // import { getServices } from "@/sanity/sanity-utils";
-//import ServicesWrapper from "@/components/ServicesWrapper";
 // import AccordionComponent from "@/components/Accordion";
 
 export default async function Home() {
@@ -22,8 +21,7 @@ export default async function Home() {
       {/* <AccordionComponent services={services} /> */}
       {/* <div id="servicios">
         <ServiceGrid services={services} />
-      </div>
-      <ServicesWrapper /> */}
+      </div> */}
       <Services id="proyectos" />
       <ScrollScaleText text="Colaboramos" id="colaboradores" />
       <Contact id="contacto" />
