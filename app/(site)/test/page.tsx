@@ -84,13 +84,7 @@ export default function QuadrantGrid({ services }: QuadrantGridProps) {
                       transition={{ duration: 0.3, delay: 0.8 }}
                       className="absolute inset-0 z-20 flex items-center justify-center"
                     >
-                      <QuadrantContent
-                        title={service.name}
-                        description={service.serviceList}
-                        iconSrc={service.image}
-                        isActive
-                        hideTitle={false}
-                      />
+                      <QuadrantContent title={service.name} hideTitle={false} />
                     </motion.div>
                   )}
                 </AnimatePresence>
