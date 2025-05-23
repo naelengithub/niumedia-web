@@ -6,7 +6,7 @@ export default async function ProjectsPage() {
   const projects = await getProjects();
 
   return (
-    <div className="bg-[#072633] min-h-screen relative overflow-hidden">
+    <div className="bg-[rgb(7,38,51)] min-h-screen relative overflow-hidden">
       <div className="absolute left-0 top-0 w-1/3 h-full">
         <BezierCanvasWrapper />
       </div>

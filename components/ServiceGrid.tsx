@@ -135,7 +135,7 @@ export default function ServiceGrid({ services }: Props) {
     <div
       ref={containerRef}
       id="servicios"
-      className="w-screen h-[80vh] relative overflow-hidden touch-manipulation bg-[#084254] border-y border-[#00b1da]"
+      className="w-screen h-[90vh] relative overflow-hidden touch-manipulation bg-[#084254] border-y border-[#00b1da]"
     >
       {services.slice(0, 4).map((service, i) => {
         const id = quadrantOrder[i];
@@ -158,7 +158,7 @@ export default function ServiceGrid({ services }: Props) {
         return (
           <motion.div
             key={service._id}
-            className={`absolute text-white flex items-center justify-center ${getBorderClasses(id)}`}
+            className={`absolute text-white flex justify-center ${getBorderClasses(id)}`}
             onMouseEnter={() => !isTouch && setHovered(id)}
             onMouseLeave={() => !isTouch && setHovered(null)}
             onClick={() => handleActivate(id)}
@@ -167,12 +167,7 @@ export default function ServiceGrid({ services }: Props) {
           >
             <QuadrantContent
               title={service.name}
-              description={
-                Array.isArray(service.serviceList) ? service.serviceList : []
-              } // ✅ guaranteed safe
-              iconSrc={service.image}
               isVertical={isVertical}
-              isActive={hovered === id}
               hideTitle={hideTitle}
             />
           </motion.div>

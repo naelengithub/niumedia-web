@@ -89,7 +89,7 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
         {/* Main text */}
         <p
           ref={textRef}
-          className="leading-none font-light transition-all duration-100 ease-out whitespace-nowrap p-4 sm:p-0 self-end"
+          className="leading-none font-light transition-all duration-100 ease-out whitespace-nowrap p-4 sm:p-0 self-end text-[#084254"
           style={{
             fontSize: `${fontSizeVW}vw`,
             transform: `translateX(-${translateX}px)`,

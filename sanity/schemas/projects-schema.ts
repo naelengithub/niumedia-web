@@ -5,7 +5,7 @@ const projects = {
   fields: [
     {
       name: "name",
-      title: "Name",
+      title: "Nombre",
       type: "string",
     },
     {
@@ -16,17 +16,17 @@ const projects = {
     },
     {
       name: "year",
-      title: "Year",
+      title: "Año",
       type: "number",
     },
     {
       name: "client",
-      title: "Client",
+      title: "Cliente",
       type: "string",
     },
     {
       name: "services",
-      title: "Services",
+      title: "Servicos",
       type: "array",
       of: [{ type: "string" }],
       options: {
@@ -35,26 +35,34 @@ const projects = {
     },
     {
       name: "image",
-      title: "Image",
+      title: "Imagen",
       type: "image",
       options: { hotspot: true },
       fields: [
         {
           name: "alt",
-          title: "Alt",
+          title: "Texto alternativo",
           type: "string",
         },
       ],
     },
     {
+      name: "shortDescription",
+      title: "Breve descripción",
+      type: "text",
+      description:
+        "Breve resumen del proyecto que aparecerá en la página inicial (3 oraciones máx).",
+      rows: 3,
+    },
+    {
       name: "content",
-      title: "Description",
+      title: "Descripción",
       type: "array",
       of: [{ type: "block" }],
     },
     {
       name: "additionalImages",
-      title: "Additional Images",
+      title: "Imágenes adicionales",
       type: "array",
       of: [
         {
@@ -63,7 +71,7 @@ const projects = {
           fields: [
             {
               name: "alt",
-              title: "Alt Text",
+              title: "Texto alternativo",
               type: "string",
             },
           ],

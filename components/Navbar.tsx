@@ -74,9 +74,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
         {/* Hamburger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`md:hidden p-2 text-3xl ${
-            isProjectsPage ? "text-black" : "text-white"
-          } z-50 relative w-8 h-8`}
+          className={`md:hidden p-2 text-3xl text-white z-50 relative w-8 h-8`}
           aria-label="Toggle menu"
         >
           <span

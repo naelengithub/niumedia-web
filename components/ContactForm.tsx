@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/24/outline";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 import Link from "next/link";
 import Footer from "./Footer";
 
-const DynamicP5Sketch = dynamic(() => import("./canvases/bubbles"), {
-  ssr: false,
-  loading: () => null,
-});
+// const DynamicP5Sketch = dynamic(() => import("./canvases/bubbles"), {
+//   ssr: false,
+//   loading: () => null,
+// });
 
 interface ContactProps {
   id?: string;
@@ -17,28 +17,28 @@ interface ContactProps {
 
 export default function Contact({ id }: ContactProps) {
   const containerRef = useRef(null);
-  const [showSketch, setShowSketch] = useState(false);
+  // const [showSketch, setShowSketch] = useState(false);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShowSketch(true); // 👈 only activate, never deactivate
-        }
-      },
-      { threshold: 0.2 }
-    );
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     ([entry]) => {
+  //       if (entry.isIntersecting) {
+  //         setShowSketch(true); // 👈 only activate, never deactivate
+  //       }
+  //     },
+  //     { threshold: 0.2 }
+  //   );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+  //   if (containerRef.current) {
+  //     observer.observe(containerRef.current);
+  //   }
 
-    return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (containerRef.current) {
+  //       observer.unobserve(containerRef.current);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <div
@@ -79,7 +79,7 @@ export default function Contact({ id }: ContactProps) {
           <Footer />
         </div>
       </div>
-      {showSketch && <DynamicP5Sketch />}
+      {/* {showSketch && <DynamicP5Sketch />} */}
     </div>
   );
 }
