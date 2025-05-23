@@ -32,10 +32,11 @@ export async function getProjects(): Promise<Project[]> {
       year,
       client,
       services,
+      shortDescription[]{..., children[]{...}},
       "slug": slug.current,
       "image": image.asset->url,
       "alt": image.alt,
-      content,
+      content[]{..., children[]{...}},
       additionalImages[]{
         "url": asset->url,
         alt

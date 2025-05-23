@@ -49,7 +49,8 @@ const projects = {
     {
       name: "shortDescription",
       title: "Breve descripción",
-      type: "text",
+      type: "array",
+      of: [{ type: "block" }],
       description:
         "Breve resumen del proyecto que aparecerá en la página inicial (3 oraciones máx).",
       rows: 3,

@@ -99,13 +99,12 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
                     {projects[activeIndex]?.services?.join("  |  ")}
                   </h2>
                 )}
-
                 <div className="text-sm mb-2 text-gray-500">
                   {projects[activeIndex].client} — {projects[activeIndex].year}
                 </div>
                 <div className="text-base max-w-sm pb-4 leading-relaxed prose">
                   <PortableText
-                    value={projects[activeIndex].shortDescription}
+                    value={projects[activeIndex]?.shortDescription}
                   />
                 </div>
                 <Link
