@@ -104,7 +104,7 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
                 </div>
                 <div className="text-base max-w-sm pb-4 leading-relaxed prose">
                   <PortableText
-                    value={projects[activeIndex]?.shortDescription}
+                    value={projects[activeIndex].shortDescription}
                   />
                 </div>
                 <Link
@@ -165,9 +165,15 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
               <div className="text-sm text-gray-500 mb-2">
                 {project.client} — {project.year}
               </div>
-              <div className="text-base leading-relaxed prose pb-2">
+              <div className="text-base leading-relaxed prose pb-6">
                 <PortableText value={project.shortDescription} />
               </div>
+              <Link
+                href="/projects"
+                className="px-4 py-2 bg-[#084254] rounded-2xl text-[#03caff] hover:text-[#084254] hover:bg-[#03caff] transition duration-300"
+              >
+                Ver todos
+              </Link>
             </div>
           </div>
         ))}
