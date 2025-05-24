@@ -109,7 +109,7 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
                 </div>
                 <Link
                   href="/projects"
-                  className="px-4 py-2 mt-12 bg-[#084254] rounded-2xl text-[#03caff] hover:text-[#084254] hover:bg-[#03caff] transition duration-300"
+                  className="px-4 py-2 mt-12 bg-[#084254] rounded-2xl text-niuText hover:text-[#084254] hover:bg-niuText transition duration-300"
                 >
                   Ver todos
                 </Link>
@@ -170,7 +170,7 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
               </div>
               <Link
                 href="/projects"
-                className="px-4 py-2 bg-[#084254] rounded-2xl text-[#03caff] hover:text-[#084254] hover:bg-[#03caff] transition duration-300"
+                className="px-4 py-2 bg-[#084254] rounded-2xl text-niuText hover:text-[#084254] hover:bg-niuText transition duration-300"
               >
                 Ver todos
               </Link>

@@ -116,7 +116,7 @@ export default function ServiceGrid({ services }: Props) {
   };
 
   const getBorderClasses = (id: QuadrantId) => {
-    const base = "border-[#00b1da]";
+    const base = "border-niu02";
     switch (id) {
       case "tl":
         return `${base} border-b`;
@@ -135,7 +135,7 @@ export default function ServiceGrid({ services }: Props) {
     <div
       ref={containerRef}
       id="servicios"
-      className="w-screen h-[90vh] relative overflow-hidden touch-manipulation bg-[#084254] border-y border-[#00b1da]"
+      className="w-screen h-[90vh] relative overflow-hidden touch-manipulation bg-[#084254] border-y border-niu02"
     >
       {services.slice(0, 4).map((service, i) => {
         const id = quadrantOrder[i];

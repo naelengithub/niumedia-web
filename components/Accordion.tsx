@@ -34,7 +34,7 @@ export default function AccordionComponent({ services }: Props) {
   };
 
   return (
-    <section className="relative bg-[#084152] w-full mx-auto divide-y divide-[#00b1da] border-y border-[#00b1da]">
+    <section className="relative bg-niu04 w-full mx-auto divide-y divide-niu02 border-y border-niu02">
       {/* FLOATING IMAGE PREVIEW */}
       <AnimatePresence>
         {hoveredIndex !== null && (
@@ -74,7 +74,7 @@ export default function AccordionComponent({ services }: Props) {
             className={`
     group flex justify-between items-center w-full text-left relative 
     transition-colors duration-300
-    ${hoveredIndex === i ? "text-[#00b1da]" : "bg-transparent text-white"}
+    ${hoveredIndex === i ? "text-niu02" : "bg-transparent text-white"}
   `}
           >
             <motion.span

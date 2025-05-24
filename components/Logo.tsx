@@ -11,12 +11,7 @@ export default function Logo(props: LogoProps) {
     return color;
   };
 
-  const colors = [
-    "bg-[#0f7d9e]",
-    "bg-[#00b1da]",
-    "bg-[#084152]",
-    "bg-[#aedee4]",
-  ];
+  const colors = ["bg-niu01", "bg-niu02", "bg-niu04", "bg-niu03"];
 
   return (
     <div

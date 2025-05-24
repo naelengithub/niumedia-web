@@ -1,9 +1,9 @@
 const AnimatedLogo = () => {
   const blocks = [
-    { color: "bg-[#0f7d9e]", className: "col-span-1 row-span-1" },
-    { color: "bg-[#00b1da]", className: "col-span-3 row-span-1" },
-    { color: "bg-[#084152]", className: "col-span-2 row-span-2" },
-    { color: "bg-[#aedee4]", className: "col-span-4 row-span-1" },
+    { color: "bg-niu01", className: "col-span-1 row-span-1" },
+    { color: "bg-niu02", className: "col-span-3 row-span-1" },
+    { color: "bg-niu04", className: "col-span-2 row-span-2" },
+    { color: "bg-niu03", className: "col-span-4 row-span-1" },
   ];
 
   return (

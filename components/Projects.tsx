@@ -30,7 +30,7 @@ export default function Projects({ projects }: ProjectsProps) {
   return (
     <div className="overflow-y-scroll sm:overflow-auto h-screen w-full flex flex-col relative sm:flex-row">
       {/* LEFT SIDEBAR */}
-      <aside className="sm:w-[20%] relative flex justify-end bg-gradient-to-r from-transparent to-[#084152] sm:to-transparent">
+      <aside className="sm:w-[20%] relative flex justify-end bg-gradient-to-r from-transparent to-niu04 sm:to-transparent">
         <div className="sm:pb-0 sm:overflow-y-scroll overflow-x-scroll sm:h-full sm:w-full  w-fit flex sm:flex-col justify-around px-6 md:px-12 pt-18 sm:py-24">
           {projects.map((proj, i) => {
             const isActive = i === activeIndex;
@@ -39,7 +39,7 @@ export default function Projects({ projects }: ProjectsProps) {
                 key={proj._id}
                 className={`project-item relative flex items-center gap-2 text-right cursor-pointer pr-2 ${
                   isActive
-                    ? "font-bold text-[#03caff] text-base pl-2 -ml-1"
+                    ? "font-bold text-niuText text-base pl-2 -ml-1"
                     : "text-gray-300 text-sm"
                 }`}
                 onClick={() => setActiveIndex(i)}
@@ -54,7 +54,7 @@ export default function Projects({ projects }: ProjectsProps) {
       {/* RIGHT CONTENT */}
       <main
         ref={mainRef}
-        className="sm:w-[80%] min-h-screen overflow-y-auto p-12 pt-24 relative bg-gradient-to-r from-transparent to-[#084152]"
+        className="sm:w-[80%] min-h-screen overflow-y-auto p-12 pt-24 relative bg-gradient-to-r from-transparent to-niu04"
       >
         <AnimatePresence mode="wait">
           {activeProject && (
@@ -66,7 +66,7 @@ export default function Projects({ projects }: ProjectsProps) {
               transition={{ duration: 0.4 }}
             >
               {/* Title */}
-              <h1 className="text-[7vw] font-bold text-left w-full z-50 text-[#03caff]">
+              <h1 className="text-[7vw] font-bold text-left w-full z-50 text-niuText">
                 {activeProject.name}
               </h1>
 
@@ -78,7 +78,7 @@ export default function Projects({ projects }: ProjectsProps) {
                       {services.join("  |  ")}
                     </h2>
                   )}
-                  <div className="pt-4 sm:pt-0 flex gap-2 justify-end sm:justify-start items-center text-[#03caff]">
+                  <div className="pt-4 sm:pt-0 flex gap-2 justify-end sm:justify-start items-center text-niuText">
                     <h2>Scroll Down</h2>
                     <Image
                       src="/svg/flecha_scroll_down.svg"
@@ -114,15 +114,15 @@ export default function Projects({ projects }: ProjectsProps) {
                 <div className="flex flex-col gap-4">
                   <div className="flex w-full justify-between text-gray-300 border-b-1 border-gray-500 pb-4">
                     <h2>Año</h2>
-                    <h2 className="text-[#03caff]">{activeProject.year}</h2>
+                    <h2 className="text-niuText">{activeProject.year}</h2>
                   </div>
                   <div className="flex w-full justify-between text-gray-300 border-b-1 border-gray-500 pb-4">
                     <h2>Cliente</h2>
-                    <h2 className="text-[#03caff]">{activeProject.client}</h2>
+                    <h2 className="text-niuText">{activeProject.client}</h2>
                   </div>
                   <div className="flex w-full justify-between gap-4 text-gray-300 border-b-1 border-gray-500 pb-4">
                     <h2>Servicios</h2>
-                    <h2 className="text-[#03caff]">{services.join(" | ")}</h2>
+                    <h2 className="text-niuText">{services.join(" | ")}</h2>
                   </div>
                   {Array.isArray(activeProject.additionalImages) &&
                     activeProject.additionalImages.length > 0 && (

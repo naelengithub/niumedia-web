@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcss from "tailwindcss";
 
 export default {
   content: [
@@ -8,14 +9,10 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        testblue: "#084152",
-        "light-blue": "var(--bg-light-blue)",
-      },
       fontFamily: {
         neue: ['"NeueHaasDisplay"', "sans-serif"],
       },
     },
   },
-  plugins: [],
+  plugins: [tailwindcss],
 } satisfies Config;

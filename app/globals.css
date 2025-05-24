@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --bg-dark-blue: #084254;
-  --bg-light-blue: #006881;
-  --niu01: #0f7d9e;
-  --niu02: #00b1da;
-  --niu03: #aedee4;
-  --niu04: #084152;
-  --niu05: #03caff;
+}
+
+@theme {
+  --color-niuBg: #084254;
+  --color-niu01: #0f7d9e;
+  --color-niu02: #00b1da;
+  --color-niu03: #aedee4;
+  --color-niu04: #084152;
+  --color-niuText: #03caff;
 }
 
 @theme inline {
@@ -181,4 +181,18 @@ body {
 
 .animate-fade-in-start {
   animation: fade-in-start 0.5s ease-out forwards;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 60s linear infinite;
+  will-change: transform;
 }
