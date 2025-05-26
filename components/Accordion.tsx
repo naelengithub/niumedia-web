@@ -36,10 +36,10 @@ export default function AccordionComponent({ services, id }: Props) {
 
   return (
     <section
-      className="relative h-auto flex flex-col md:flex-row bg-niu04 w-screen divide-y divide-niu02 border-y border-niu02"
+      className="relative h-auto flex flex-col md:flex-row bg-niuBg w-screen divide-y divide-niu02 border-y border-niu02"
       id={id}
     >
-      <div className="md:min-h-full md:w-1/3 border-0 border-r-1 border-b-1 border-niu02 text-white uppercase text-sm px-8 py-4 md:px-12 md:py-6">
+      <div className="md:min-h-full md:w-1/3 border-0 md:border-r-1 border-b-1 border-niu02 text-white uppercase text-sm px-8 py-4 md:px-12 md:py-6">
         <h2>Nuestros servicios</h2>
       </div>
 
@@ -96,7 +96,7 @@ export default function AccordionComponent({ services, id }: Props) {
 
             <AnimatePresence initial={false}>
               {activeIndex === i && (
-                <div className="relative text-white pt-4">
+                <div className="relative text-white pt-4 overflow-visible">
                   {/* SVG background blob */}
                   <div className="absolute inset-0 pointer-events-none">
                     <svg
@@ -107,8 +107,11 @@ export default function AccordionComponent({ services, id }: Props) {
                       <defs>
                         <radialGradient id="grad" cx="50%" cy="50%" r="50%">
                           <stop offset="0%" stopColor="#6ec1e4" />
-                          <stop offset="100%" stopColor="#1e3a8a" />{" "}
-                          {/* deep blue */}
+                          <stop
+                            offset="100%"
+                            stopColor="#6ec1e4"
+                            stopOpacity="0"
+                          />
                         </radialGradient>
                       </defs>
                       <path
@@ -126,7 +129,7 @@ export default function AccordionComponent({ services, id }: Props) {
                   >
                     <div className="relative w-full flex flex-col items-center">
                       {/* Centered + symbol */}
-                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 text-8xl text-orange-400 z-10">
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 text-8xl z-10 bg-gradient-to-b from-orange-200 via-orange-400 to-orange-400 text-transparent bg-clip-text">
                         +
                       </div>
 

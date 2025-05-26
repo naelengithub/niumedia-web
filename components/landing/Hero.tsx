@@ -17,10 +17,10 @@ export default function Hero() {
   const translateY = Math.min(scrollY / 4, 800);
 
   return (
-    <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 pb-24 text-white">
+    <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 pb-24 text-white overflow-x-clip">
       {/* 🔆 Glow Background */}
       <motion.div
-        className="absolute inset-0 z-[-30] flex items-center justify-center"
+        className="absolute inset-0 z-[-30] flex items-center justify-center overflow-x-clip"
         initial={{ opacity: 0.12 }}
         animate={{ y: [0, -2, 0, 2, 0] }}
         transition={{
