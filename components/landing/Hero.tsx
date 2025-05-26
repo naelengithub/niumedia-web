@@ -74,7 +74,7 @@ export default function Hero() {
           className="flex flex-col items-center space-y-6"
         >
           <h1 className="text-[20vw] mb-0 px-0 leading-tight">Niumedia</h1>
-          <div className="flex w-full justify-between text-xl font-medium lg:text-6xl tracking-wider pl-1 sm:pl-2 md:pl-3 lg:pl-4">
+          <div className="flex w-full justify-between text-xl leading-0 font-medium lg:text-6xl tracking-wider pl-1 sm:pl-2 md:pl-3 lg:pl-4">
             {"networks".split("").map((char, index) => (
               <span key={index}>{char}</span>
             ))}

@@ -80,7 +80,9 @@ export default function AccordionComponent({ services, id }: Props) {
           >
             <button
               onClick={() => toggle(i)}
-              className={`group flex justify-between items-center w-full text-left relative transition-colors duration-300 cursor-pointer ${hoveredIndex === i ? "text-niu02" : "bg-transparent text-white"}`}
+              className={`group flex justify-between items-center w-full text-left relative transition-colors duration-300 cursor-pointer ${
+                hoveredIndex === i ? "text-niu02" : "bg-transparent text-white"
+              }`}
             >
               <motion.span
                 initial={false}
@@ -88,7 +90,9 @@ export default function AccordionComponent({ services, id }: Props) {
                   scale: hoveredIndex === i ? 1.9 : 1,
                 }}
                 transition={{ duration: 0.3, ease: "easeInOut", type: "tween" }}
-                className={`origin-left ${activeIndex === i ? "text-niu02 font-bold" : "text-white"}`}
+                className={`origin-left ${
+                  activeIndex === i ? "text-niu02 font-bold" : "text-white"
+                }`}
               >
                 {service.name}
               </motion.span>
@@ -128,37 +132,45 @@ export default function AccordionComponent({ services, id }: Props) {
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                   >
                     <div className="relative w-full flex flex-col items-center">
-                      {/* Centered + symbol */}
-                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 text-8xl z-10 bg-gradient-to-b from-orange-200 via-orange-400 to-orange-400 text-transparent bg-clip-text">
-                        +
+                      {/* Same image as hovered preview */}
+                      <div className="w-full min-h-60 relative">
+                        <Image
+                          src={service.image}
+                          alt={`${service.name} preview`}
+                          fill
+                          className="object-contain"
+                        />
                       </div>
-
-                      {/* List divided into two columns with center divider */}
-                      <ul className="w-full mt-12 border-t border-white/30 pt-12 text-center flex flex-col md:flex-row md:divide-x md:divide-white/30">
-                        <div className="flex-1 flex flex-col px-6 divide-y divide-white/20">
-                          {service.serviceList
-                            .filter((_, idx) => idx % 2 === 0)
-                            .map((item, idx) => (
-                              <li key={idx} className="list-none py-2">
-                                <p className="text-base leading-relaxed">
-                                  {item}
-                                </p>
-                              </li>
-                            ))}
-                        </div>
-                        <div className="flex-1 flex flex-col px-6 divide-y divide-white/20">
-                          {service.serviceList
-                            .filter((_, idx) => idx % 2 !== 0)
-                            .map((item, idx) => (
-                              <li key={idx} className="list-none py-2">
-                                <p className="text-base leading-relaxed">
-                                  {item}
-                                </p>
-                              </li>
-                            ))}
-                        </div>
-                      </ul>
-
+                      <div>
+                        {/* List divided into two columns */}
+                        <ul className="relative w-full mt-12 border-t border-white/30 pt-12 text-center flex flex-col md:flex-row md:divide-x md:divide-white/30">
+                          <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 text-8xl z-10 bg-gradient-to-b from-orange-200 via-orange-400 to-orange-400 text-transparent bg-clip-text border-0">
+                            +
+                          </div>
+                          <div className="flex-1 flex flex-col px-6 divide-y divide-white/20">
+                            {service.serviceList
+                              .filter((_, idx) => idx % 2 === 0)
+                              .map((item, idx) => (
+                                <li key={idx} className="list-none py-2">
+                                  <p className="text-base leading-relaxed">
+                                    {item}
+                                  </p>
+                                </li>
+                              ))}
+                          </div>
+                          <div className="flex-1 flex flex-col px-6 divide-y divide-white/20">
+                            {service.serviceList
+                              .filter((_, idx) => idx % 2 !== 0)
+                              .map((item, idx) => (
+                                <li key={idx} className="list-none py-2">
+                                  <p className="text-base leading-relaxed">
+                                    {item}
+                                  </p>
+                                </li>
+                              ))}
+                          </div>
+                        </ul>
+                      </div>
                       {/* Centered rounded image */}
                       <div className="flex justify-center items-center mt-12">
                         <div className="rounded-full overflow-hidden w-64 h-32">
