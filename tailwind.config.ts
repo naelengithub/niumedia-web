@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
-import tailwindcss from "tailwindcss";
 
-export default {
+const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,7 +11,18 @@ export default {
       fontFamily: {
         neue: ['"NeueHaasDisplay"', "sans-serif"],
       },
+      keyframes: {
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(16px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "fade-in": "fade-in 0.5s ease-out forwards",
+      },
     },
   },
-  plugins: [tailwindcss],
-} satisfies Config;
+  plugins: [],
+};
+
+export default config;

@@ -2,14 +2,8 @@
 
 import { useRef } from "react";
 import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/24/outline";
-// import dynamic from "next/dynamic";
 import Link from "next/link";
 import Footer from "./Footer";
-
-// const DynamicP5Sketch = dynamic(() => import("./canvases/bubbles"), {
-//   ssr: false,
-//   loading: () => null,
-// });
 
 interface ContactProps {
   id?: string;
@@ -17,28 +11,6 @@ interface ContactProps {
 
 export default function Contact({ id }: ContactProps) {
   const containerRef = useRef(null);
-  // const [showSketch, setShowSketch] = useState(false);
-
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     ([entry]) => {
-  //       if (entry.isIntersecting) {
-  //         setShowSketch(true); // 👈 only activate, never deactivate
-  //       }
-  //     },
-  //     { threshold: 0.2 }
-  //   );
-
-  //   if (containerRef.current) {
-  //     observer.observe(containerRef.current);
-  //   }
-
-  //   return () => {
-  //     if (containerRef.current) {
-  //       observer.unobserve(containerRef.current);
-  //     }
-  //   };
-  // }, []);
 
   return (
     <div
@@ -47,12 +19,14 @@ export default function Contact({ id }: ContactProps) {
       id={id}
     >
       <div className="flex flex-col justify-between h-full">
-        <div className="pt-18 px-6 sm:px-12">
+        <div className="pt-18 px-6 text-gray-300 sm:px-12">
           <div className="text-right">
             <p className="text-pretty text-lg font-medium tracking-tight md:text-2xl">
               ¿Te interesa colaborar?
             </p>
-            <h2 className="mt-2 text-5xl md:text-8xl md:mt-6">Hablemos.</h2>
+            <h2 className="mt-2 text-niuText text-5xl md:text-8xl md:mt-6">
+              Hablemos.
+            </h2>
           </div>
           <dl className="flex flex-col items-end mt-10 space-y-4 text-base/7">
             <div className="flex gap-x-4 hover:text-[#006881]">
@@ -79,7 +53,6 @@ export default function Contact({ id }: ContactProps) {
           <Footer />
         </div>
       </div>
-      {/* {showSketch && <DynamicP5Sketch />} */}
     </div>
   );
 }

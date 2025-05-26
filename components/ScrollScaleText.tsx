@@ -36,20 +36,16 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
       );
       setScrollProgress(progress);
 
-      const SCALE_START = windowHeight;
       const SCALE_DURATION = 300;
       const MIN_FONT = 4;
       const MAX_FONT = 12;
-
-      const SLIDE_START = SCALE_START - SCALE_DURATION;
       const SLIDE_SPEED = 2;
 
       const scaleProgress = Math.max(
         0,
-        Math.min(1, (SCALE_START - top) / SCALE_DURATION)
+        Math.min(1, (windowHeight - top) / SCALE_DURATION)
       );
-      const fontSize = MIN_FONT + scaleProgress * (MAX_FONT - MIN_FONT);
-      setFontSizeVW(fontSize);
+      setFontSizeVW(MIN_FONT + scaleProgress * (MAX_FONT - MIN_FONT));
 
       const containerLeft = sectionEl.getBoundingClientRect().left;
       const containerPaddingLeft = parseFloat(
@@ -59,9 +55,10 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
       const textLeft = textEl.getBoundingClientRect().left;
       const maxTranslate = textLeft - targetX - 24;
 
-      const shouldSlide = top < SLIDE_START;
-      const rawTranslate = shouldSlide ? (SLIDE_START - top) / SLIDE_SPEED : 0;
-
+      const shouldSlide = top < windowHeight - SCALE_DURATION;
+      const rawTranslate = shouldSlide
+        ? (windowHeight - SCALE_DURATION - top) / SLIDE_SPEED
+        : 0;
       const clampedTranslate = Math.min(
         rawTranslate,
         Math.max(maxTranslate, 0)
@@ -73,7 +70,7 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
@@ -81,32 +78,21 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
 
   return (
     <section
-      className="relative h-[300vh] bg-gradient-to-tl from-niu04 to-niu02 via-niu01 text-niuText px-12"
-      ref={sectionRef}
+      className="relative h-[300vh] bg-gradient-to-tl text-niuText px-12"
       id={id}
+      ref={sectionRef}
     >
       <div className="sticky top-0 h-screen flex flex-col justify-center items-end py-6 md:py-24 overflow-hidden">
         {/* Main text */}
         <p
           ref={textRef}
-          className="leading-none font-light transition-all duration-100 ease-out whitespace-nowrap p-4 sm:p-0 self-end text-[#084254"
+          className="leading-none font-light transition-all duration-100 ease-out whitespace-nowrap p-4 sm:p-0 self-end"
           style={{
             fontSize: `${fontSizeVW}vw`,
             transform: `translateX(-${translateX}px)`,
           }}
         >
           {text}
-        </p>
-
-        {/* Subtitle */}
-        <p
-          className={`mt-0 md:mt-2 lg:mt-6 text-2xl md:text-5xl font-light transition-all duration-900 ease-out ${
-            showSubtitle
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-4 pointer-events-none"
-          }`}
-        >
-          con las mejores marcas
         </p>
 
         {/* Logos grid */}
@@ -117,7 +103,7 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
               const groupIndex = Math.floor(index / 2);
               const maxGroup = Math.floor(
                 (scrollProgress * clientLogos.length) / 2 + 1
-              ); // ensure at least 2 columns show early
+              );
               const isVisible = groupIndex <= maxGroup;
 
               return (

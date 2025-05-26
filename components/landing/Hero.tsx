@@ -17,7 +17,7 @@ export default function Hero() {
   const translateY = Math.min(scrollY / 4, 800);
 
   return (
-    <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 overflow-hidden pb-24 text-white">
+    <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 pb-24 text-white">
       {/* 🔆 Glow Background */}
       <motion.div
         className="absolute inset-0 z-[-30] flex items-center justify-center"
@@ -84,4 +84,3 @@ export default function Hero() {
     </section>
   );
 }
-

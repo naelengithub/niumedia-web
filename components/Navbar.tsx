@@ -14,18 +14,6 @@ export default function Navbar({ className = "" }: NavbarProps) {
   const pathname = usePathname();
   const isProjectsPage = pathname.startsWith("/projects");
 
-  const handleColabClick = () => {
-    const el = document.getElementById("colaboradores");
-    if (el) {
-      const offsetBottom = el.offsetTop + el.offsetHeight;
-      window.scrollTo({
-        top: offsetBottom - window.innerHeight,
-        behavior: "smooth",
-      });
-      setIsOpen(false);
-    }
-  };
-
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
   }, [isOpen]);
@@ -59,13 +47,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
             <>
               <Link href="#servicios">Servicios</Link>
               <Link href="#proyectos">Proyectos</Link>
-              <button
-                onClick={handleColabClick}
-                className="uppercase hover:cursor-pointer"
-              >
-                Colaboradores
-              </button>
-
+              <Link href="#clientes">Clientes</Link>
               <Link href="#contacto">Contacto</Link>
             </>
           )}
@@ -109,12 +91,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
               <Link href="#servicios" onClick={() => setIsOpen(false)}>
                 Servicios
               </Link>
-              <button
-                onClick={handleColabClick}
-                className="hover:cursor-pointer"
-              >
-                Colaboradores
-              </button>
+              <Link href="#clientes">Clientes</Link>
               <Link href="#contacto" onClick={() => setIsOpen(false)}>
                 Contacto
               </Link>
