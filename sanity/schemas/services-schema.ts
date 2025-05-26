@@ -39,6 +39,19 @@ const services = {
       type: "array",
       of: [{ type: "string" }],
     },
+    {
+      name: "imageSecondary",
+      title: "Imagen secundaria",
+      type: "image",
+      options: { hotspot: true },
+      fields: [
+        {
+          name: "alt",
+          title: "Alt",
+          type: "string",
+        },
+      ],
+    },
   ],
 };
 

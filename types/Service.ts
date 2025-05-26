@@ -7,6 +7,8 @@ export type Service = {
   image: string;
   slug: string;
   alt: string;
+  imageSecondary?: string;
+  altSecondary?: string;
   content: PortableTextBlock[];
   serviceList: string[];
 };

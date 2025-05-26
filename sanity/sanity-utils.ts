@@ -16,6 +16,8 @@ export async function getServices(): Promise<Service[]> {
       "slug": slug.current,
       "image": image.asset->url,
       "alt": image.alt,
+      "imageSecondary": imageSecondary.asset->url,
+      "altSecondary": imageSecondary.alt,
       content,
       serviceList
     }`
