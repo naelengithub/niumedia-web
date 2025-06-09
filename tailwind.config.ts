@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         neue: ['"NeueHaasDisplay"', "sans-serif"],
+        myriad: ['"MyriadPro"', "sans-serif"],
       },
       keyframes: {
         "fade-in": {

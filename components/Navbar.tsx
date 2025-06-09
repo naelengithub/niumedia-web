@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Logo from "./Logo";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 export interface NavbarProps {
@@ -11,44 +11,127 @@ export interface NavbarProps {
 
 export default function Navbar({ className = "" }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
   const pathname = usePathname();
   const isProjectsPage = pathname.startsWith("/projects");
+  const lastYRef = useRef(0);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
+
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+
+      // Show "Niumedia networks" after 80% of viewport height
+      const showTitleThreshold = currentY > window.innerHeight * 0.8;
+      setShowTitle(showTitleThreshold);
+
+      // Hide navbar only after 120% of viewport height
+      const hideNavbarThreshold = currentY > window.innerHeight * 0.8;
+
+      if (!hideNavbarThreshold) {
+        setShowNavbar(true);
+        lastYRef.current = currentY;
+        return;
+      }
+
+      // Hide on scroll down, show on scroll up
+      if (currentY < lastYRef.current) {
+        setShowNavbar(true);
+      } else if (currentY > lastYRef.current) {
+        setShowNavbar(false);
+      }
+
+      lastYRef.current = currentY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [isOpen]);
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-50 px-6 py-4 flex items-center justify-between md:px-12 ${
-          isProjectsPage ? "text-black" : "text-white"
+        className={`fixed top-0 left-0 w-full z-50 px-6 py-6 flex items-center justify-between md:px-12 transition-all duration-500 transform ${
+          showNavbar ? "translate-y-0" : "-translate-y-full"
+        } ${isProjectsPage ? "text-black" : "text-white"} ${
+          showTitle && !isProjectsPage
+            ? "backdrop-blur-md bg-gradient from-white/10 to-transparent"
+            : ""
         } ${className}`}
       >
-        {/* Logo */}
-        <Link href="/" className="flex flex-col items-center gap-2 w-fit">
-          <div
-            className={`flex gap-2 transition-transform duration-700 ${
-              isOpen ? "rotate-[360deg]" : ""
-            }`}
-          >
-            <Logo tone="color" />
+        {/* Logo + Title */}
+        <Link href="/" className="flex flex-col items-center gap-4 w-fit group">
+          <div className="flex">
+            <div
+              className={`flex gap-2 transition-transform duration-700 ${
+                isOpen ? "rotate-[360deg]" : ""
+              }`}
+            >
+              <Logo tone="color" />
+            </div>
+            {showTitle && !isProjectsPage && (
+              <h1 className="absolute font-myriad left-24 sm:left-29 text-4xl sm:text-2xl lg:text-4xl leading-none tracking-tight">
+                Niumedia
+              </h1>
+            )}
           </div>
+          {/* Show Niumedia networks after scrolling past Hero */}
+          {showTitle && !isProjectsPage && (
+            <div className="absolute font-myriad top-15 left-6 sm:top-14 sm:left-12 overflow-hidden text-white animate-fade-in w-53 sm:w-52">
+              <div className="flex justify-between text-xs sm:text-sm lg:text-md font-medium tracking-wider w-full">
+                {"networks".split("").map((char, i) => (
+                  <span
+                    key={i}
+                    className="transition duration-300 group-hover:translate-y-[-1px]"
+                  >
+                    {char}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </Link>
 
         {/* Desktop Nav */}
         <div
           className={`hidden md:flex gap-8 text-sm uppercase tracking-widest font-medium ${
-            isProjectsPage ? "text-white" : "text-white mix-blend-difference"
+            isProjectsPage ? "text-white" : "text-white"
           }`}
         >
-          <Link href="/">Inicio</Link>
+          <Link
+            href="/"
+            className="hover:text-niuText transition-colors duration-300"
+          >
+            Inicio
+          </Link>
           {!isProjectsPage && (
             <>
-              <Link href="#servicios">Servicios</Link>
-              <Link href="#proyectos">Proyectos</Link>
-              <Link href="#clientes">Clientes</Link>
-              <Link href="#contacto">Contacto</Link>
+              <Link
+                href="#servicios"
+                className="hover:text-niuText transition-colors duration-300"
+              >
+                Servicios
+              </Link>
+              <Link
+                href="#proyectos"
+                className="hover:text-niuText transition-colors duration-300"
+              >
+                Proyectos
+              </Link>
+              <Link
+                href="#clientes"
+                className="hover:text-niuText transition-colors duration-300"
+              >
+                Clientes
+              </Link>
+              <Link
+                href="#contacto"
+                className="hover:text-niuText transition-colors duration-300"
+              >
+                Contacto
+              </Link>
             </>
           )}
         </div>
@@ -91,7 +174,9 @@ export default function Navbar({ className = "" }: NavbarProps) {
               <Link href="#servicios" onClick={() => setIsOpen(false)}>
                 Servicios
               </Link>
-              <Link href="#clientes">Clientes</Link>
+              <Link href="#clientes" onClick={() => setIsOpen(false)}>
+                Clientes
+              </Link>
               <Link href="#contacto" onClick={() => setIsOpen(false)}>
                 Contacto
               </Link>

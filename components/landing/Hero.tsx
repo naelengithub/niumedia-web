@@ -8,7 +8,18 @@ export default function Hero() {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -42,19 +53,10 @@ export default function Hero() {
         </svg>
       </motion.div>
 
-      {/* 🌀 Animated entry for SoftOrbit */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          duration: 1.2,
-          delay: 0.6,
-          ease: [0.33, 1, 0.68, 1],
-        }}
-        className="absolute z-[-20] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px]"
-      >
+      {/* 🌀 SoftOrbit stays stable */}
+      <div className="absolute z-[-20] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px]">
         <SoftOrbit />
-      </motion.div>
+      </div>
 
       {/* 🔠 Scrolling text content only */}
       <motion.div
@@ -73,8 +75,10 @@ export default function Hero() {
           }}
           className="flex flex-col items-center space-y-6"
         >
-          <h1 className="text-[20vw] mb-0 px-0 leading-tight">Niumedia</h1>
-          <div className="flex w-full justify-between text-xl leading-0 font-medium lg:text-6xl tracking-wider pl-1 sm:pl-2 md:pl-3 lg:pl-4">
+          <h1 className="font-myriad text-[20vw] mb-0 px-0 leading-tight">
+            Niumedia
+          </h1>
+          <div className="flex w-full font-myriad justify-between text-xl leading-0 font-medium lg:text-6xl tracking-wider pl-1 sm:pl-2 md:pl-3 lg:pl-4">
             {"networks".split("").map((char, index) => (
               <span key={index}>{char}</span>
             ))}

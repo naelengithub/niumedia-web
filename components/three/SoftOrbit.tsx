@@ -6,11 +6,9 @@ import { useRef, Suspense, useEffect, useState } from "react";
 import * as THREE from "three";
 
 function CenteredModel({
-  rotation,
-  dragging,
+  targetRotation,
 }: {
-  rotation: React.MutableRefObject<{ x: number; y: number }>;
-  dragging: React.MutableRefObject<boolean>;
+  targetRotation: React.MutableRefObject<{ x: number; y: number }>;
 }) {
   const modelGroup = useRef<THREE.Group>(null!);
   const { scene } = useGLTF("/models/sph01.glb");
@@ -37,18 +35,10 @@ function CenteredModel({
   useFrame(() => {
     if (!modelGroup.current) return;
 
-    const targetY = dragging.current
-      ? rotation.current.y
-      : modelGroup.current.rotation.y + 0.015;
-
-    const targetX = dragging.current
-      ? rotation.current.x
-      : modelGroup.current.rotation.x;
-
     modelGroup.current.rotation.y +=
-      (targetY - modelGroup.current.rotation.y) * 0.1;
+      (targetRotation.current.y - modelGroup.current.rotation.y) * 0.05;
     modelGroup.current.rotation.x +=
-      (targetX - modelGroup.current.rotation.x) * 0.1;
+      (targetRotation.current.x - modelGroup.current.rotation.x) * 0.05;
   });
 
   return (
@@ -61,29 +51,17 @@ function CenteredModel({
 useGLTF.preload("/models/sph01.glb");
 
 export default function SoftOrbit() {
-  const rotation = useRef({ x: 0, y: 0 });
-  const dragging = useRef(false);
-  const lastMouse = useRef({ x: 0, y: 0 });
+  const targetRotation = useRef({ x: 0, y: 0 });
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    dragging.current = true;
-    lastMouse.current = { x: e.clientX, y: e.clientY };
-  };
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const { left, top, width, height } =
+      e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - left) / width;
+    const y = (e.clientY - top) / height;
 
-  const handlePointerUp = () => {
-    dragging.current = false;
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!dragging.current) return;
-
-    const deltaX = e.clientX - lastMouse.current.x;
-    const deltaY = e.clientY - lastMouse.current.y;
-
-    rotation.current.y += deltaX * 0.01;
-    rotation.current.x += deltaY * 0.01;
-
-    lastMouse.current = { x: e.clientX, y: e.clientY };
+    // Map cursor position to rotation range
+    targetRotation.current.y = (x - 0.5) * 0.6; // horizontal sway
+    targetRotation.current.x = (y - 0.5) * 0.3; // vertical tilt
   };
 
   return (
@@ -94,10 +72,7 @@ export default function SoftOrbit() {
         touchAction: "none",
         background: "transparent",
       }}
-      onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={handlePointerUp}
     >
       <Canvas
         camera={{ position: [0, 0, 5], fov: 35 }}
@@ -107,11 +82,10 @@ export default function SoftOrbit() {
           antialias: true,
           preserveDrawingBuffer: true,
           toneMapping: THREE.LinearToneMapping,
-          toneMappingExposure: Math.pow(2, 0.49), // ≈ 0.76
+          toneMappingExposure: Math.pow(2, 0.49),
           outputColorSpace: THREE.SRGBColorSpace,
         }}
       >
-        {/* Match glTF viewer lighting */}
         <ambientLight color={0xffffff} intensity={2} />
         <directionalLight
           position={[2, 2, 2]}
@@ -120,7 +94,7 @@ export default function SoftOrbit() {
         />
 
         <Suspense fallback={null}>
-          <CenteredModel rotation={rotation} dragging={dragging} />
+          <CenteredModel targetRotation={targetRotation} />
         </Suspense>
       </Canvas>
     </div>

@@ -14,9 +14,7 @@ export default function Logo(props: LogoProps) {
   const colors = ["bg-niu01", "bg-niu02", "bg-niu04", "bg-niu03"];
 
   return (
-    <div
-      className={`${className} flex items-center justify-center w-fit mix-blend-difference`}
-    >
+    <div className={`${className} flex items-center justify-center w-fit`}>
       <div className="grid grid-cols-6 grid-rows-2 gap-0.5 w-16 h-8">
         <div className={getColor(colors[0]) + " col-span-1 row-span-1"} />
         <div className={getColor(colors[1]) + " col-span-3 row-span-1"} />
