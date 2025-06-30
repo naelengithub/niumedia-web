@@ -79,7 +79,7 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
         {/* LEFT SIDE */}
         {projects.length > 0 && (
           <div className="bg-niuBg w-2/5 h-screen sticky top-0 flex-col justify-center p-12 border-r border-black overflow-hidden">
-            <p className="text-sm mb-4 mt-24 tracking-wide text-white">
+            <p className="text-sm md:text-lg mb-6 mt-24 tracking-wide text-gray-100">
               NUESTROS PROYECTOS
             </p>
             <AnimatePresence mode="wait">
@@ -90,26 +90,26 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
                 exit={{ y: -20, opacity: 0 }}
                 transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
               >
-                <h2 className="text-7xl font-bold mb-1 text-niuText">
+                <h2 className="text-7xl font-bold mb-1 py-4 text-niuText">
                   {projects[activeIndex].name}
                 </h2>
                 {/* Services */}
                 {projects.length > 0 && (
-                  <h2 className="text-gray-100 font-medium">
+                  <h2 className="text-gray-100 font-medium sm:text-2xl">
                     {projects[activeIndex]?.services?.join("  |  ")}
                   </h2>
                 )}
-                <div className="text-sm mb-2 text-gray-300">
+                <div className="text-sm sm:text-lg py-4 text-gray-300 ">
                   {projects[activeIndex].client} — {projects[activeIndex].year}
                 </div>
-                <div className="text-base max-w-sm pb-4 leading-relaxed prose text-gray-100">
+                <div className="text-base sm:text-2xl max-w-sm py-4 mb-4 leading-relaxed prose text-gray-100">
                   <PortableText
                     value={projects[activeIndex].shortDescription}
                   />
                 </div>
                 <Link
                   href="/projects"
-                  className="px-4 py-2 mt-12 border-niuText border-1 rounded-2xl text-niuText hover:text-[#084254] hover:bg-niuText transition duration-300"
+                  className="px-4 py-2 mt-16 border-niuText border-1 rounded-2xl text-niuText hover:text-[#084254] hover:bg-niuText transition duration-300"
                 >
                   Ver más
                 </Link>

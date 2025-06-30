@@ -97,7 +97,7 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
               animate={
                 startExitAnimation
                   ? {
-                      top: "1rem", // py-8 always
+                      top: "1.5rem", // py-8 always
                       left: isMobile ? "1.5rem" : "3rem", // px-6 mobile
                       x: "0%",
                       y: "0%",

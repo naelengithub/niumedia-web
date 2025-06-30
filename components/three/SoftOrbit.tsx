@@ -11,7 +11,7 @@ function CenteredModel({
   targetRotation: React.MutableRefObject<{ x: number; y: number }>;
 }) {
   const modelGroup = useRef<THREE.Group>(null!);
-  const { scene } = useGLTF("/models/sph01.glb");
+  const { scene } = useGLTF("/models/sph02.glb");
   const [centered, setCentered] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ function CenteredModel({
   );
 }
 
-useGLTF.preload("/models/sph01.glb");
+useGLTF.preload("/models/sph02.glb");
 
 export default function SoftOrbit() {
   const targetRotation = useRef({ x: 0, y: 0 });

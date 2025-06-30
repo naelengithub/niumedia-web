@@ -30,12 +30,12 @@ export default function About(props: AboutProps) {
         </p>
       </div>
       <div className="flex flex-col gap-4 md:gap-24 mt-24 py-20 md:flex-row">
-        <h1 className="uppercase text-sm">Nuestra experiencia</h1>
+        <h1 className="uppercase text-sm sm:text-lg">Nuestra experiencia</h1>
         <div className="flex flex-col gap-4 md:gap-12 md:flex-row">
           <p className="text-3xl">
             Creación de contenido para medios digitales
           </p>
-          <div className="">
+          <div className="sm:text-3xl">
             <p>
               Reunimos talentos con experiencia en comunicación digital, diseño
               gráfico, tecnologías de la información e infraestructura.

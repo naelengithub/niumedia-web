@@ -158,7 +158,7 @@ export default function ServiceGrid({ services }: Props) {
         return (
           <motion.div
             key={service._id}
-            className={`absolute text-white flex justify-center ${getBorderClasses(id)}`}
+            className={`absolute text-gray-100 flex justify-center ${getBorderClasses(id)}`}
             onMouseEnter={() => !isTouch && setHovered(id)}
             onMouseLeave={() => !isTouch && setHovered(null)}
             onClick={() => handleActivate(id)}

@@ -121,7 +121,7 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
                     alt={`Brand ${index + 1}`}
                     width={70}
                     height={60}
-                    className="object-contain w-[60px] hover:scale-110 transition-transform duration-300"
+                    className="object-contain w-[80px] hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               );
@@ -146,7 +146,7 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
                     alt={`Brand ${index + 1}`}
                     width={70}
                     height={60}
-                    className="object-contain sm:w-[80px] md:w-[90px]"
+                    className="object-contain sm:w-[100px] md:w-[150px]"
                   />
                 </div>
               );

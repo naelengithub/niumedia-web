@@ -55,7 +55,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
       <nav
         className={`fixed top-0 left-0 w-full z-50 px-6 py-6 flex items-center justify-between md:px-12 transition-all duration-500 transform ${
           showNavbar ? "translate-y-0" : "-translate-y-full"
-        } ${isProjectsPage ? "text-black" : "text-white"} ${
+        } ${isProjectsPage ? "text-black" : "text-gray-100"} ${
           showTitle && !isProjectsPage
             ? "backdrop-blur-md bg-gradient from-white/10 to-transparent"
             : ""
@@ -72,14 +72,14 @@ export default function Navbar({ className = "" }: NavbarProps) {
               <Logo tone="color" />
             </div>
             {showTitle && !isProjectsPage && (
-              <h1 className="absolute font-myriad left-24 sm:left-29 text-4xl sm:text-2xl lg:text-4xl leading-none tracking-tight">
+              <h1 className="absolute font-myriad left-24 sm:left-29 text-4xl leading-none tracking-tight">
                 Niumedia
               </h1>
             )}
           </div>
           {/* Show Niumedia networks after scrolling past Hero */}
           {showTitle && !isProjectsPage && (
-            <div className="absolute font-myriad top-15 left-6 sm:top-14 sm:left-12 overflow-hidden text-white animate-fade-in w-53 sm:w-52">
+            <div className="absolute font-myriad top-15 left-6 sm:top-14 sm:left-12 overflow-hidden text-gray-100 animate-fade-in w-53 sm:w-52">
               <div className="flex justify-between text-xs sm:text-sm lg:text-md font-medium tracking-wider w-full">
                 {"networks".split("").map((char, i) => (
                   <span
@@ -97,7 +97,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
         {/* Desktop Nav */}
         <div
           className={`hidden md:flex gap-8 text-sm uppercase tracking-widest font-medium ${
-            isProjectsPage ? "text-white" : "text-white"
+            isProjectsPage ? "text-gray-100" : "text-gray-100"
           }`}
         >
           <Link
@@ -139,7 +139,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
         {/* Hamburger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`md:hidden p-2 text-3xl text-white z-50 relative w-8 h-8`}
+          className={`md:hidden p-2 text-3xl text-gray-100 z-50 relative w-8 h-8`}
           aria-label="Toggle menu"
         >
           <span
@@ -165,7 +165,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
           isOpen ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="flex flex-col justify-center items-start pl-6 gap-2 leading-tight text-[10vw] font-medium h-full pt-32 text-black">
+        <div className="flex flex-col justify-center items-start pl-6 gap-2 leading-tight text-[10vw] font-medium h-full pt-32 text-niuBg">
           <Link href="/" onClick={() => setIsOpen(false)}>
             Inicio
           </Link>
@@ -173,6 +173,9 @@ export default function Navbar({ className = "" }: NavbarProps) {
             <>
               <Link href="#servicios" onClick={() => setIsOpen(false)}>
                 Servicios
+              </Link>
+              <Link href="#proyectos" onClick={() => setIsOpen(false)}>
+                Proyectos
               </Link>
               <Link href="#clientes" onClick={() => setIsOpen(false)}>
                 Clientes
@@ -182,12 +185,9 @@ export default function Navbar({ className = "" }: NavbarProps) {
               </Link>
             </>
           )}
-          <Link
-            href="mailto:hola@niumedia.tv"
-            className="text-lg absolute bottom-6 left-1/4"
-          >
-            hola@niumedia.tv
-          </Link>
+          <p className="absolute text-xs w-full text-center bottom-6">
+            Niumedia Networks 2025
+          </p>
         </div>
       </div>
     </>

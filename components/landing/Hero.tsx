@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import SoftOrbit from "../three/SoftOrbit";
+import TerrainWaveCanvas from "../BezierBlob";
 
 export default function Hero() {
   const [scrollY, setScrollY] = useState(0);
@@ -28,9 +29,9 @@ export default function Hero() {
   const translateY = Math.min(scrollY / 4, 800);
 
   return (
-    <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 pb-24 text-white overflow-x-clip">
+    <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 pb-24 text-gray-100 overflow-x-clip">
       {/* 🔆 Glow Background */}
-      <motion.div
+      {/* <motion.div
         className="absolute inset-0 z-[-30] flex items-center justify-center overflow-x-clip"
         initial={{ opacity: 0.12 }}
         animate={{ y: [0, -2, 0, 2, 0] }}
@@ -51,10 +52,11 @@ export default function Hero() {
           </radialGradient>
           <circle cx="50" cy="50" r="50" fill="url(#lightGlow)" />
         </svg>
-      </motion.div>
+      </motion.div> */}
 
       {/* 🌀 SoftOrbit stays stable */}
-      <div className="absolute z-[-20] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px]">
+      <TerrainWaveCanvas cursorResponsive="no" />
+      <div className="absolute z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px]">
         <SoftOrbit />
       </div>
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Service } from "@/types/Service";
+import TerrainWaveCanvas from "./BezierBlob";
 
 interface Props {
   services: Service[];
@@ -39,8 +40,9 @@ export default function AccordionComponent({ services, id }: Props) {
       className="relative h-auto flex flex-col md:flex-row bg-niuBg w-screen divide-y divide-niu02 border-y border-niu02"
       id={id}
     >
-      <div className="md:min-h-full md:w-1/3 border-0 md:border-r-1 border-b-1 border-niu02 text-white uppercase text-sm px-8 py-4 md:px-12 md:py-6">
-        <h2>Nuestros servicios</h2>
+      <div className="md:min-h-full border-b-1 md:w-1/3 md:border-0 md:border-r-1 border-niu02 text-gray-100 uppercase text-sm px-8 py-4 md:px-12 md:py-6">
+        <h2 className="text-lg">Nuestros servicios</h2>
+        <div className="relative w-full md:h-screen z-0"></div>
       </div>
 
       {/* FLOATING IMAGE PREVIEW */}
@@ -80,18 +82,20 @@ export default function AccordionComponent({ services, id }: Props) {
           >
             <button
               onClick={() => toggle(i)}
-              className={`group flex justify-between items-center w-full text-left relative transition-colors duration-300 cursor-pointer ${
-                hoveredIndex === i ? "text-niu02" : "bg-transparent text-white"
+              className={`group flex justify-between items-center w-full text-left text-3xl relative transition-colors duration-300 cursor-pointer ${
+                hoveredIndex === i
+                  ? "text-niu02"
+                  : "bg-transparent text-gray-100"
               }`}
             >
               <motion.span
                 initial={false}
                 animate={{
-                  scale: hoveredIndex === i ? 1.9 : 1,
+                  scale: hoveredIndex === i ? 1.2 : 1,
                 }}
                 transition={{ duration: 0.3, ease: "easeInOut", type: "tween" }}
                 className={`origin-left ${
-                  activeIndex === i ? "text-niu02 font-bold" : "text-white"
+                  activeIndex === i ? "text-niu02" : "text-gray-100"
                 }`}
               >
                 {service.name}
@@ -100,7 +104,7 @@ export default function AccordionComponent({ services, id }: Props) {
 
             <AnimatePresence initial={false}>
               {activeIndex === i && (
-                <div className="relative text-white pt-4 overflow-visible">
+                <div className="relative text-gray-100 pt-4 overflow-visible">
                   {/* SVG background blob */}
                   <div className="absolute inset-0 pointer-events-none">
                     <svg
@@ -203,6 +207,16 @@ export default function AccordionComponent({ services, id }: Props) {
             </AnimatePresence>
           </div>
         ))}
+        <div className="relative w-full h-full min-h-64 overflow-hidden">
+          <Image
+            src="/images/linea_y_circulo.png"
+            alt="Visual"
+            width={256}
+            height={128}
+            className="absolute top-1/4 left-1/2 z-10 w-32 h-20"
+          />
+          <TerrainWaveCanvas cursorResponsive="yes" />
+        </div>
       </div>
     </section>
   );

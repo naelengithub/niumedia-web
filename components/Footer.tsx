@@ -5,7 +5,7 @@ import SocialLinkRow from "./SocialLinkRow";
 export default function Footer() {
   return (
     <footer className="flex flex-col bg-niuBg">
-      <div className="flex flex-col gap-6 pt-24 pb-12">
+      <div className="flex flex-col gap-6 pb-12">
         <SocialLinkRow url="https://instagram.com" name="Instagram" />
         <SocialLinkRow url="https://facebook.com" name="Facebook" />
         <SocialLinkRow url="https://linkedin.com" name="LinkedIn" />

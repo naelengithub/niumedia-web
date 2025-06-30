@@ -6,6 +6,7 @@ import Contact from "@/components/ContactForm";
 import SplashWrapper from "@/components/SplashScreenWrapper";
 import { getServices } from "@/sanity/sanity-utils";
 import AccordionComponent from "@/components/Accordion";
+// import TerrainWaveCanvas from "@/components/BezierBlob";
 
 export default async function Home() {
   const services = await getServices(); // ✅ use real data from Sanity
@@ -13,11 +14,14 @@ export default async function Home() {
   return (
     <SplashWrapper>
       <div className="bg-niuBg">
-        <div className="bg-gradient-to-t from-niuBg to-niuBg/90">
+        <div className="bg-gradient-to-t from-niuBg to-niuBg/90 w-screen">
+          {/* <div className="max-w-2xs">
+            <TerrainWaveCanvas />
+          </div> */}
           <Hero />
           <div className="h-[20vh]" />
         </div>
-        <About className="bg-gradient-to-t from-niuBg to-niuBg text-white" />
+        <About className="bg-gradient-to-t from-niuBg to-niuBg text-gray-100" />
         <div className="h-[10vh] border-0" id="servicios" />
         <AccordionComponent services={services} />
         <Services id="proyectos" />
