@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import type p5Types from "p5";
 
 interface FlowFieldParticlesProps {
@@ -11,13 +11,9 @@ interface FlowFieldParticlesProps {
   dotSize?: number;
   repulseRadius?: number;
   repulseStrength?: number;
-  /** How close to the top edge before particles get pushed down */
   topRepelRadius?: number;
-  /** Strength of the top-edge repulsion */
   topRepelStrength?: number;
-  /** How close to the top-right corner before particles get pushed away */
   cornerRepelRadius?: number;
-  /** Strength of the top-right corner repulsion */
   cornerRepelStrength?: number;
   className?: string;
 }
@@ -43,6 +39,12 @@ export default function FlowFieldParticles({
     if (sketchRef.current) return;
     let cancelled = false;
 
+    // detect mobile to reduce particle count
+    const isMobile =
+      typeof navigator !== "undefined" &&
+      /Mobi|Android/i.test(navigator.userAgent);
+    const effectiveNum = isMobile ? Math.floor(numParticles / 3) : numParticles;
+
     const loadP5 = async () => {
       const p5Module = await import("p5");
       if (cancelled) return;
@@ -52,6 +54,15 @@ export default function FlowFieldParticles({
         type Vec = p5Types.Vector;
         const palette = ["#0f7d9e", "#00b1da", "#aedee4", "#006880", "#03caff"];
         const bgHex = "#084152";
+
+        // pre-calc squared radii
+        const repulseRadiusSq = repulseRadius * repulseRadius;
+        const cornerRepelRadiusSq = cornerRepelRadius * cornerRepelRadius;
+
+        // reused vectors
+        let cursorVec: Vec;
+        let cornerVec: Vec;
+        let particles: Particle[] = [];
 
         class Particle {
           loc: Vec;
@@ -81,16 +92,19 @@ export default function FlowFieldParticles({
               p.TWO_PI *
               noiseStrength;
             this.dir.set(Math.cos(angle), Math.sin(angle));
-            this.loc.add(this.dir.copy().mult(this.speed));
+            this.loc.add(this.dir.mult(this.speed));
           }
 
           applyCursorRepel(cursor: Vec) {
-            const d = this.loc.dist(cursor);
-            if (d < repulseRadius) {
-              const away = p5.Vector.sub(this.loc, cursor)
-                .normalize()
-                .mult(((repulseRadius - d) / repulseRadius) * repulseStrength);
-              this.loc.add(away);
+            const dx = this.loc.x - cursor.x;
+            const dy = this.loc.y - cursor.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < repulseRadiusSq) {
+              const d = Math.sqrt(d2) || 1;
+              const factor =
+                ((repulseRadius - d) / repulseRadius) * repulseStrength;
+              this.loc.x += (dx / d) * factor;
+              this.loc.y += (dy / d) * factor;
             }
           }
 
@@ -103,18 +117,17 @@ export default function FlowFieldParticles({
             }
           }
 
-          applyCornerRepel() {
-            // repel from the top-right corner
-            const corner = p.createVector(p.width, 0);
-            const d = this.loc.dist(corner);
-            if (d < cornerRepelRadius) {
-              const away = p5.Vector.sub(this.loc, corner)
-                .normalize()
-                .mult(
-                  ((cornerRepelRadius - d) / cornerRepelRadius) *
-                    cornerRepelStrength
-                );
-              this.loc.add(away);
+          applyCornerRepel(corner: Vec) {
+            const dx = this.loc.x - corner.x;
+            const dy = this.loc.y - corner.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < cornerRepelRadiusSq) {
+              const d = Math.sqrt(d2) || 1;
+              const factor =
+                ((cornerRepelRadius - d) / cornerRepelRadius) *
+                cornerRepelStrength;
+              this.loc.x += (dx / d) * factor;
+              this.loc.y += (dy / d) * factor;
             }
           }
 
@@ -127,7 +140,6 @@ export default function FlowFieldParticles({
               this.loc.x = p.random(p.width, p.width * 1.2);
               this.loc.y = p.random(p.height * 0.2, p.height);
             }
-            // prevent going above top
             this.loc.y = p.max(this.loc.y, 0);
           }
 
@@ -139,24 +151,26 @@ export default function FlowFieldParticles({
             p.ellipse(this.loc.x, this.loc.y, this.size);
           }
 
-          run(cursor: Vec) {
+          run(cursor: Vec, corner: Vec) {
             this.move();
             this.applyCursorRepel(cursor);
             this.applyTopRepel();
-            this.applyCornerRepel();
+            this.applyCornerRepel(corner);
             this.checkEdges();
             this.draw();
           }
         }
 
-        let particles: Particle[] = [];
-
         p.setup = () => {
           const parent = canvasRef.current!;
+          p.pixelDensity(1);
+          p.frameRate(30);
           p.createCanvas(parent.offsetWidth, parent.offsetHeight);
           p.noStroke();
+          cursorVec = p.createVector();
+          cornerVec = p.createVector();
           particles = Array.from(
-            { length: numParticles },
+            { length: effectiveNum },
             () => new Particle(dotSize)
           );
           p.background(bgHex);
@@ -169,15 +183,18 @@ export default function FlowFieldParticles({
         };
 
         p.draw = () => {
-          // fade for trails
-          const fadeColor = p.color(bgHex);
-          fadeColor.setAlpha(fadeAlpha);
-          p.fill(fadeColor);
-          p.rect(0, 0, p.width, p.height);
+          // fade every other frame
+          if (p.frameCount % 2 === 0) {
+            const fadeColor = p.color(bgHex);
+            fadeColor.setAlpha(fadeAlpha);
+            p.fill(fadeColor);
+            p.rect(0, 0, p.width, p.height);
+          }
 
-          const cursor = p.createVector(p.mouseX, p.mouseY);
+          cursorVec.set(p.mouseX, p.mouseY);
+          cornerVec.set(p.width, 0);
           for (const pt of particles) {
-            pt.run(cursor);
+            pt.run(cursorVec, cornerVec);
           }
         };
       };
