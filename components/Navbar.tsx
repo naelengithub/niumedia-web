@@ -132,6 +132,12 @@ export default function Navbar({ className = "" }: NavbarProps) {
               >
                 Contacto
               </Link>
+              <Link
+                href="/projects"
+                className="hover:text-niuText transition-colors duration-300"
+              >
+                Archivo
+              </Link>
             </>
           )}
         </div>
@@ -169,22 +175,24 @@ export default function Navbar({ className = "" }: NavbarProps) {
           <Link href="/" onClick={() => setIsOpen(false)}>
             Inicio
           </Link>
-          {!isProjectsPage && (
-            <>
-              <Link href="#servicios" onClick={() => setIsOpen(false)}>
-                Servicios
-              </Link>
-              <Link href="#proyectos" onClick={() => setIsOpen(false)}>
-                Proyectos
-              </Link>
-              <Link href="#clientes" onClick={() => setIsOpen(false)}>
-                Clientes
-              </Link>
-              <Link href="#contacto" onClick={() => setIsOpen(false)}>
-                Contacto
-              </Link>
-            </>
-          )}
+          <div className="flex flex-col pl-6">
+            <Link href="/#servicios" onClick={() => setIsOpen(false)}>
+              Servicios
+            </Link>
+            <Link href="/#proyectos" onClick={() => setIsOpen(false)}>
+              Proyectos
+            </Link>
+            <Link href="/#clientes" onClick={() => setIsOpen(false)}>
+              Clientes
+            </Link>
+            <Link href="/#contacto" onClick={() => setIsOpen(false)}>
+              Contacto
+            </Link>
+          </div>
+          <Link href="/projects" onClick={() => setIsOpen(false)}>
+            Archivo
+          </Link>
+
           <p className="absolute text-xs w-full text-center bottom-6">
             Niumedia Networks 2025
           </p>

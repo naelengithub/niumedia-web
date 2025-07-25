@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Service } from "@/types/Service";
@@ -11,7 +11,22 @@ interface Props {
   id?: string;
 }
 
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < breakpoint);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 export default function AccordionComponent({ services, id }: Props) {
+  const isMobile = useIsMobile();
+
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [previewPos, setPreviewPos] = useState<{ x: number; y: number }>({
     x: 0,
@@ -91,7 +106,7 @@ export default function AccordionComponent({ services, id }: Props) {
               <motion.span
                 initial={false}
                 animate={{
-                  scale: hoveredIndex === i ? 1.2 : 1,
+                  scale: !isMobile && hoveredIndex === i ? 1.2 : 1,
                 }}
                 transition={{ duration: 0.3, ease: "easeInOut", type: "tween" }}
                 className={`origin-left ${

@@ -42,6 +42,7 @@ export default async function Home() {
 
           {/* Your content */}
           <ScrollScaleText text="Clientes" id="clientes" />
+
           <Contact id="contacto" />
         </div>
       </div>

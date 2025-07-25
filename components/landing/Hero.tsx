@@ -82,15 +82,15 @@ export default function Hero() {
 
       {/* 🌀 SoftOrbit stays stable */}
       <TerrainWaveCanvas cursorResponsive="no" />
-      <div className="absolute z-0 top-5/12 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px]">
-        <div className="absolute z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px]">
+      <div className="absolute z-0 top-5/12 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:w-[500px] sm:h-[500px]">
+        <div className="absolute z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-screen sm:h-screen flex items-center">
           {isMobile ? (
             <motion.div
               className="w-full h-full relative"
               style={{ y: syncedY }}
             >
               <Image
-                src="/models/sph03.png"
+                src="/models/sph02.png"
                 alt="SoftOrbit PNG"
                 fill
                 className="object-contain"

@@ -70,7 +70,7 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
   }, [projects]);
 
   return (
-    <div className="w-full" id={id}>
+    <div className="w-full border-b-1 border-niu02" id={id}>
       {/* === Desktop & Tablet Version === */}
       <div
         className="hidden md:flex flex-row w-full min-h-screen"
@@ -124,7 +124,7 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
             <section
               key={index}
               data-index={index}
-              className="h-screen w-full flex items-center justify-center bg-gray-100"
+              className="h-screen w-full flex items-center justify-center"
             >
               <div className="relative w-full h-full">
                 <Image
@@ -132,7 +132,7 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
                   alt={project.alt || `Project ${index + 1}`}
                   fill
                   sizes="100vw"
-                  className="object-cover"
+                  className="object-cover border-b-1 border-black"
                   priority
                 />
               </div>

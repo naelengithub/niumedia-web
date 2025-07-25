@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import SplashScreen from "@/components/SplashScreen";
+import ScrollToHash from "./common/ScrollToHash";
 
 export default function SplashWrapper({
   children,
@@ -13,6 +14,9 @@ export default function SplashWrapper({
   return showSplash ? (
     <SplashScreen onFinished={() => setShowSplash(false)} />
   ) : (
-    <>{children}</>
+    <>
+      <ScrollToHash />
+      {children}
+    </>
   );
 }
