@@ -41,7 +41,7 @@ export default async function Home() {
           </svg>
 
           {/* Your content */}
-          <ScrollScaleText text="Clientes" id="clientes" />
+          <ScrollScaleText id="clientes" />
 
           <Contact id="contacto" />
         </div>

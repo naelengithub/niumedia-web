@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 interface ScrollScaleTextProps {
-  text: string;
   id?: string;
 }
 
@@ -13,19 +12,14 @@ const clientLogos = Array.from(
   (_, i) => `/client-logos/logo${i}.svg`
 );
 
-export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
+export default function ScrollScaleText({ id }: ScrollScaleTextProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const [fontSizeVW, setFontSizeVW] = useState(4);
-  const [translateX, setTranslateX] = useState(0);
-  const [showSubtitle, setShowSubtitle] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const sectionEl = sectionRef.current;
-      const textEl = textRef.current;
-      if (!sectionEl || !textEl) return;
+      if (!sectionEl) return;
 
       const { top, height } = sectionEl.getBoundingClientRect();
       const windowHeight = window.innerHeight;
@@ -35,65 +29,25 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
         Math.max(0, 1 - (top + height - windowHeight) / height)
       );
       setScrollProgress(progress);
-
-      const SCALE_DURATION = 300;
-      const MIN_FONT = 4;
-      const MAX_FONT = 12;
-      const SLIDE_SPEED = 2;
-
-      const scaleProgress = Math.max(
-        0,
-        Math.min(1, (windowHeight - top) / SCALE_DURATION)
-      );
-      setFontSizeVW(MIN_FONT + scaleProgress * (MAX_FONT - MIN_FONT));
-
-      const containerLeft = sectionEl.getBoundingClientRect().left;
-      const containerPaddingLeft = parseFloat(
-        getComputedStyle(sectionEl).paddingLeft || "0"
-      );
-      const targetX = containerLeft + containerPaddingLeft;
-      const textLeft = textEl.getBoundingClientRect().left;
-      const maxTranslate = textLeft - targetX - 24;
-
-      const shouldSlide = top < windowHeight - SCALE_DURATION;
-      const rawTranslate = shouldSlide
-        ? (windowHeight - SCALE_DURATION - top) / SLIDE_SPEED
-        : 0;
-      const clampedTranslate = Math.min(
-        rawTranslate,
-        Math.max(maxTranslate, 0)
-      );
-      setTranslateX(clampedTranslate);
-
-      if (clampedTranslate >= maxTranslate && !showSubtitle) {
-        setShowSubtitle(true);
-      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [showSubtitle]);
+  }, []);
 
   return (
     <section
-      className="relative h-[300vh] bg-gradient-to-tl text-niuText px-12"
+      className="relative h-[300vh] bg-gradient-to-tl text-niuText px-12 py-24"
       id={id}
       ref={sectionRef}
     >
-      <div className="sticky top-0 h-screen flex flex-col justify-center items-end py-6 md:py-24 overflow-hidden">
-        {/* Main text */}
-        <p
-          ref={textRef}
-          className="leading-none font-light transition-all duration-100 ease-out whitespace-nowrap p-4 sm:p-0 self-end"
-          style={{
-            fontSize: `${fontSizeVW}vw`,
-            transform: `translateX(-${translateX}px)`,
-          }}
-        >
-          {text}
-        </p>
+      <div className="sticky top-0 h-screen flex flex-col justify-center items-center py-6 md:py-24 overflow-hidden text-center">
+        {/* Fixed Title */}
+        <h2 className="text-5xl sm:text-7xl md:text-9xl font-light">
+          Clientes
+        </h2>
 
         {/* Logos grid */}
         <div className="relative md:mt-12 w-full px-4">
@@ -129,7 +83,7 @@ export default function ScrollScaleText({ text, id }: ScrollScaleTextProps) {
           </div>
 
           {/* Tablet and up: full grid with fade-in on scroll */}
-          <div className="hidden sm:grid sm:grid-cols-3 md:grid-cols-5 gap-6">
+          <div className="hidden sm:grid sm:grid-cols-3 md:grid-cols-5 gap-6 mt-12">
             {clientLogos.map((src, index) => {
               const visible = scrollProgress > index / clientLogos.length;
               return (
