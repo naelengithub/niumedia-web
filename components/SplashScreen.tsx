@@ -20,9 +20,13 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
     }, 1700);
 
     const finalTimer = setTimeout(() => {
-      setIsVisible(false);
-      setTimeout(onFinished, 300);
-    }, 2000);
+      setStartFadeOut(true); // Trigger opacity animation
+
+      setTimeout(() => {
+        setIsVisible(false); // Let Framer handle exit
+        onFinished();
+      }, 600); // match duration of fade out (0.6s)
+    }, 1700); // fade + exit begin together
 
     return () => {
       clearTimeout(moveTimer);

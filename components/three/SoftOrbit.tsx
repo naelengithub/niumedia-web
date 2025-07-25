@@ -1,56 +1,22 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, useProgress } from "@react-three/drei";
 import { useRef, Suspense, useEffect, useState } from "react";
 import * as THREE from "three";
 
-function CenteredModel({
-  targetRotation,
-}: {
-  targetRotation: React.MutableRefObject<{ x: number; y: number }>;
-}) {
-  const modelGroup = useRef<THREE.Group>(null!);
-  const { scene } = useGLTF("/models/sph02.glb");
-  const [centered, setCentered] = useState(false);
+// Make onProgress optional with a no-op default
+type SoftOrbitProps = {
+  onProgress?: (p: number) => void;
+};
 
+export default function SoftOrbit({ onProgress = () => {} }: SoftOrbitProps) {
+  // useProgress from drei reports loading progress (0 → 100)
+  const { progress } = useProgress();
   useEffect(() => {
-    if (!scene || !modelGroup.current || centered) return;
+    onProgress(progress);
+  }, [progress, onProgress]);
 
-    const box = new THREE.Box3().setFromObject(scene);
-    const size = new THREE.Vector3();
-    const center = new THREE.Vector3();
-    box.getSize(size);
-    box.getCenter(center);
-
-    modelGroup.current.position.set(-center.x, -center.y, -center.z);
-    modelGroup.current.rotation.y = Math.PI - 2.5;
-
-    const maxDim = Math.max(size.x, size.y, size.z);
-    modelGroup.current.scale.setScalar(2 / maxDim);
-
-    setCentered(true);
-  }, [scene, centered]);
-
-  useFrame(() => {
-    if (!modelGroup.current) return;
-
-    modelGroup.current.rotation.y +=
-      (targetRotation.current.y - modelGroup.current.rotation.y) * 0.05;
-    modelGroup.current.rotation.x +=
-      (targetRotation.current.x - modelGroup.current.rotation.x) * 0.05;
-  });
-
-  return (
-    <group ref={modelGroup}>
-      <primitive object={scene} />
-    </group>
-  );
-}
-
-useGLTF.preload("/models/sph02.glb");
-
-export default function SoftOrbit() {
   const targetRotation = useRef({ x: 0, y: 0 });
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -100,3 +66,48 @@ export default function SoftOrbit() {
     </div>
   );
 }
+
+function CenteredModel({
+  targetRotation,
+}: {
+  targetRotation: React.MutableRefObject<{ x: number; y: number }>;
+}) {
+  const modelGroup = useRef<THREE.Group>(null!);
+  const { scene } = useGLTF("/models/sph02.glb");
+  const [centered, setCentered] = useState(false);
+
+  useEffect(() => {
+    if (!scene || !modelGroup.current || centered) return;
+
+    const box = new THREE.Box3().setFromObject(scene);
+    const size = new THREE.Vector3();
+    const center = new THREE.Vector3();
+    box.getSize(size);
+    box.getCenter(center);
+
+    modelGroup.current.position.set(-center.x, -center.y, -center.z);
+    modelGroup.current.rotation.y = Math.PI - 2.5;
+
+    const maxDim = Math.max(size.x, size.y, size.z);
+    modelGroup.current.scale.setScalar(2 / maxDim);
+
+    setCentered(true);
+  }, [scene, centered]);
+
+  useFrame(() => {
+    if (!modelGroup.current) return;
+
+    modelGroup.current.rotation.y +=
+      (targetRotation.current.y - modelGroup.current.rotation.y) * 0.05;
+    modelGroup.current.rotation.x +=
+      (targetRotation.current.x - modelGroup.current.rotation.x) * 0.05;
+  });
+
+  return (
+    <group ref={modelGroup}>
+      <primitive object={scene} />
+    </group>
+  );
+}
+
+useGLTF.preload("/models/sph02.glb");

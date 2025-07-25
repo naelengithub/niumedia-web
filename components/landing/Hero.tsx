@@ -1,9 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useAnimationFrame,
+} from "framer-motion";
 import SoftOrbit from "../three/SoftOrbit";
 import TerrainWaveCanvas from "../BezierBlob";
+import Image from "next/image";
 
 export default function Hero() {
   const [scrollY, setScrollY] = useState(0);
@@ -27,6 +33,26 @@ export default function Hero() {
 
   const scale = Math.min(1 + scrollY / 300, 6);
   const translateY = Math.min(scrollY / 4, 800);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Initial check
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // 🌀 Sync PNG animation with center ripple
+  const yTime = useMotionValue(0);
+  const syncedY = useTransform(
+    yTime,
+    (t) => Math.cos(t * 1.5) * 3 // rippleSpeed = 1.5, amplitude = 10px
+  );
+
+  useAnimationFrame((t) => {
+    yTime.set(t / 1000); // Convert ms to seconds
+  });
 
   return (
     <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 pb-24 text-gray-100 overflow-x-clip">
@@ -56,8 +82,25 @@ export default function Hero() {
 
       {/* 🌀 SoftOrbit stays stable */}
       <TerrainWaveCanvas cursorResponsive="no" />
-      <div className="absolute z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px]">
-        <SoftOrbit />
+      <div className="absolute z-0 top-5/12 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px]">
+        <div className="absolute z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px]">
+          {isMobile ? (
+            <motion.div
+              className="w-full h-full relative"
+              style={{ y: syncedY }}
+            >
+              <Image
+                src="/models/sph03.png"
+                alt="SoftOrbit PNG"
+                fill
+                className="object-contain"
+                priority
+              />
+            </motion.div>
+          ) : (
+            <SoftOrbit />
+          )}
+        </div>
       </div>
 
       {/* 🔠 Scrolling text content only */}
