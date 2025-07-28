@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Service } from "@/types/Service";
-import TerrainWaveCanvas from "./BezierBlob";
+import OscillatingSphereCanvas from "./canvases/OscilatingSphereCanvas";
 
 interface Props {
   services: Service[];
@@ -222,15 +222,33 @@ export default function AccordionComponent({ services, id }: Props) {
             </AnimatePresence>
           </div>
         ))}
-        <div className="relative w-full h-full min-h-64 overflow-hidden">
-          <Image
+        <div className="absolute inset-0 pointer-events-none">
+          <svg
+            viewBox="0 0 600 600"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-[130%] h-[130%] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-3xl opacity-15"
+          >
+            <defs>
+              <radialGradient id="grad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#6ec1e4" />
+                <stop offset="100%" stopColor="#6ec1e4" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <path
+              d="M421.7,305.4Q408.9,360.8,362.5,388.6Q316.1,416.4,262.6,431.8Q209.1,447.1,167.4,407.1Q125.7,367,95.1,320.9Q64.5,274.8,76.6,222.1Q88.8,169.5,127.4,130.2Q166.1,91,221.3,83.6Q276.6,76.1,330.1,97.1Q383.6,118,413.3,169Q443,220,421.7,305.4Z"
+              fill="url(#grad)"
+            />
+          </svg>
+        </div>
+        <div className="relative w-full h-fit min-h-64 overflow-hidden m-auto">
+          <OscillatingSphereCanvas />
+          {/* <Image
             src="/images/linea_y_circulo.png"
             alt="Visual"
             width={256}
             height={128}
             className="absolute top-1/4 left-1/2 z-10 w-32 h-20"
-          />
-          <TerrainWaveCanvas cursorResponsive="yes" />
+          /> */}
         </div>
       </div>
     </section>

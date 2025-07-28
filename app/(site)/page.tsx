@@ -6,6 +6,7 @@ import Contact from "@/components/ContactForm";
 import SplashWrapper from "@/components/SplashScreenWrapper";
 import { getServices } from "@/sanity/sanity-utils";
 import AccordionComponent from "@/components/Accordion";
+import Footer from "@/components/Footer";
 // import TerrainWaveCanvas from "@/components/BezierBlob";
 
 export default async function Home() {
@@ -44,6 +45,9 @@ export default async function Home() {
           <ScrollScaleText id="clientes" />
 
           <Contact id="contacto" />
+          <div className="align-end">
+            <Footer />
+          </div>
         </div>
       </div>
     </SplashWrapper>
