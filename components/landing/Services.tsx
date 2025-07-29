@@ -73,7 +73,7 @@ const ProjectsScroll: React.FC<ProjectsProps> = ({ id }) => {
     <div className="w-full border-b-1 border-niu02" id={id}>
       {/* === Desktop & Tablet Version === */}
       <div
-        className="hidden md:flex flex-row w-full min-h-screen"
+        className="hidden md:flex flex-row w-full min-h-fit"
         ref={containerRef}
       >
         {/* LEFT SIDE */}

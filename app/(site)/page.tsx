@@ -8,6 +8,7 @@ import { getServices } from "@/sanity/sanity-utils";
 import AccordionComponent from "@/components/Accordion";
 import Footer from "@/components/Footer";
 // import TerrainWaveCanvas from "@/components/BezierBlob";
+export const revalidate = 86400;
 
 export default async function Home() {
   const services = await getServices(); // ✅ use real data from Sanity

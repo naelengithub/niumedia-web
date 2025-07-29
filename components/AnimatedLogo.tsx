@@ -11,8 +11,8 @@ const AnimatedLogo = () => {
   ];
 
   return (
-    <div className="flex w-screen">
-      <div className="flex flex-col items-center justify-center w-fit">
+    <div className="flex items-center justify-center w-full">
+      <div className="flex flex-col items-center justify-center w-full max-w-fit">
         <div className="flex">
           <div className="grid grid-cols-6 grid-rows-2 gap-0.5  w-12 h-6 sm:w-16 sm:h-8">
             {blocks.map((block, index) => (

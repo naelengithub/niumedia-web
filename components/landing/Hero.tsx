@@ -58,7 +58,7 @@ export default function Hero() {
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [isMobile]);
+  }, [isMobile, mx, my, scale]);
 
   // Mobile fallback
   const yTime = useMotionValue(0);

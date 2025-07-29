@@ -2,6 +2,8 @@ import { getProjects } from "@/sanity/sanity-utils";
 import Projects from "@/components/Projects";
 import BezierCanvasWrapper from "@/components/BezierCanvasWrapper";
 
+export const revalidate = 86400;
+
 export default async function ProjectsPage() {
   const projects = await getProjects();
 
@@ -17,5 +19,3 @@ export default async function ProjectsPage() {
     </div>
   );
 }
-
-export const revalidate = 86400;

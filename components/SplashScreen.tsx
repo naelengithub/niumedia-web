@@ -101,8 +101,6 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
                 left: "50%",
                 x: "-50%",
                 y: "-50%",
-                scale: 1,
-                opacity: 1,
                 position: "absolute",
               }}
               animate={{
@@ -114,14 +112,12 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
                   : "50%",
                 x: startExitAnimation ? "0%" : "-50%",
                 y: startExitAnimation ? "0%" : "-50%",
-                scale: 1,
-                opacity: 1,
                 transition: {
                   duration: 0.6,
                   ease: [0.76, 0, 0.24, 1],
                 },
               }}
-              className="w-16 h-8"
+              className="w-fit h-fit"
             >
               <AnimatedLogo />
             </motion.div>
