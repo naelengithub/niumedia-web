@@ -53,7 +53,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-50 px-6 py-6 flex items-center justify-between md:px-12 transition-all duration-500 transform ${
+        className={`fixed top-0 left-0 w-screen z-50 px-6 py-6 flex items-center justify-between md:px-12 transition-all duration-500 transform ${
           showNavbar ? "translate-y-0" : "-translate-y-full"
         } ${isProjectsPage ? "text-black" : "text-gray-100"} ${
           showTitle && !isProjectsPage
@@ -71,27 +71,8 @@ export default function Navbar({ className = "" }: NavbarProps) {
             >
               <Logo tone="color" />
             </div>
-            {showTitle && !isProjectsPage && (
-              <h1 className="absolute font-myriad left-24 sm:left-29 text-4xl leading-none tracking-tight">
-                Niumedia
-              </h1>
-            )}
           </div>
           {/* Show Niumedia networks after scrolling past Hero */}
-          {showTitle && !isProjectsPage && (
-            <div className="absolute font-myriad top-15 left-6 sm:top-14 sm:left-12 overflow-hidden text-gray-100 animate-fade-in w-53 sm:w-52">
-              <div className="flex justify-between text-xs sm:text-sm lg:text-md font-medium tracking-wider w-full">
-                {"networks".split("").map((char, i) => (
-                  <span
-                    key={i}
-                    className="transition duration-300 group-hover:translate-y-[-1px]"
-                  >
-                    {char}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
         </Link>
 
         {/* Desktop Nav */}

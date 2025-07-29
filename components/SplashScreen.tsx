@@ -17,16 +17,16 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
 
     const fadeTimer = setTimeout(() => {
       setStartFadeOut(true);
-    }, 1700);
+    }, 2300); // 1100 + 1200
 
     const finalTimer = setTimeout(() => {
-      setStartFadeOut(true); // Trigger opacity animation
+      setStartFadeOut(true);
 
       setTimeout(() => {
-        setIsVisible(false); // Let Framer handle exit
+        setIsVisible(false);
         onFinished();
-      }, 600); // match duration of fade out (0.6s)
-    }, 1700); // fade + exit begin together
+      }, 1500);
+    }, 2300);
 
     return () => {
       clearTimeout(moveTimer);
@@ -76,16 +76,23 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
   transform: scaleY(0);
   animation: fillUp 1s ease-in-out forwards;
 }
-      `}
+        `}
       </style>
 
       <AnimatePresence>
         {isVisible && (
           <motion.div
-            className="fixed inset-0 bg-white text-black z-50"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.4 } }}
+            className="fixed inset-0 text-black z-50"
+            initial={{ backgroundColor: "#ffffff" }}
+            animate={{
+              backgroundColor: startFadeOut
+                ? "rgba(255, 255, 255, 0)"
+                : "#ffffff",
+              transition: {
+                duration: 1.5,
+                ease: [0.33, 1, 0.68, 1],
+              },
+            }}
             style={{ pointerEvents: "none" }}
           >
             <motion.div
@@ -98,26 +105,21 @@ const SplashScreen = ({ onFinished }: { onFinished: () => void }) => {
                 opacity: 1,
                 position: "absolute",
               }}
-              animate={
-                startExitAnimation
-                  ? {
-                      top: "1.5rem", // py-8 always
-                      left: isMobile ? "1.5rem" : "3rem", // px-6 mobile
-                      x: "0%",
-                      y: "0%",
-                      scale: 1,
-                      transition: {
-                        duration: 0.6,
-                        ease: [0.76, 0, 0.24, 1],
-                      },
-                    }
-                  : {}
-              }
-              style={{
-                opacity: startFadeOut ? 0 : 1,
-                transition: startFadeOut
-                  ? "opacity 0.6s ease-in-out"
-                  : undefined,
+              animate={{
+                top: startExitAnimation ? "1.5rem" : "50%",
+                left: startExitAnimation
+                  ? isMobile
+                    ? "1.5rem"
+                    : "3rem"
+                  : "50%",
+                x: startExitAnimation ? "0%" : "-50%",
+                y: startExitAnimation ? "0%" : "-50%",
+                scale: 1,
+                opacity: 1,
+                transition: {
+                  duration: 0.6,
+                  ease: [0.76, 0, 0.24, 1],
+                },
               }}
               className="w-16 h-8"
             >

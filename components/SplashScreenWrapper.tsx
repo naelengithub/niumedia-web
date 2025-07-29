@@ -11,12 +11,11 @@ export default function SplashWrapper({
 }) {
   const [showSplash, setShowSplash] = useState(true);
 
-  return showSplash ? (
-    <SplashScreen onFinished={() => setShowSplash(false)} />
-  ) : (
+  return (
     <>
       <ScrollToHash />
       {children}
+      {showSplash && <SplashScreen onFinished={() => setShowSplash(false)} />}
     </>
   );
 }

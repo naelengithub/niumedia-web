@@ -52,7 +52,7 @@ export default function AccordionComponent({ services, id }: Props) {
 
   return (
     <section
-      className="relative h-auto flex flex-col md:flex-row bg-niuBg w-screen divide-y divide-niu02 border-y border-niu02"
+      className="relative h-auto flex flex-col md:flex-row bg-niuBg w-screen divide-y divide-niu02 border-y border-niu02 overflow-hidden"
       id={id}
     >
       <div className="md:min-h-full border-b-1 md:w-1/3 md:border-0 md:border-r-1 border-niu02 text-gray-100 uppercase text-sm px-8 py-4 md:px-12 md:py-6">

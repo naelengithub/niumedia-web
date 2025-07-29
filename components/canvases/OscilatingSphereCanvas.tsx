@@ -5,8 +5,12 @@ import { useEffect, useRef } from "react";
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 400;
 const RADIUS = 150;
-const NUM_WAVES = 20;
 const STEP = 20;
+
+// Detect screen size once (client-side)
+const isMobile =
+  typeof window !== "undefined" ? window.innerWidth <= 768 : false;
+const NUM_WAVES = isMobile ? 8 : 20; // Reduce for mobile
 
 type Wave = {
   shift: number;
@@ -27,7 +31,6 @@ export default function OscillatingSphereCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wavesRef = useRef<Wave[]>([]);
   const distortionRef = useRef<number>(1); // 1 = normal circle
-  const isDesktop = typeof window !== "undefined" && window.innerWidth > 768;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,8 +39,10 @@ export default function OscillatingSphereCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = CANVAS_WIDTH;
-    canvas.height = CANVAS_HEIGHT;
+    const scaleFactor = isMobile ? 0.5 : 1;
+    canvas.width = CANVAS_WIDTH * scaleFactor;
+    canvas.height = CANVAS_HEIGHT * scaleFactor;
+    ctx.scale(scaleFactor, scaleFactor);
 
     const toRadians = (deg: number) => (deg * Math.PI) / 180;
 
@@ -53,10 +58,10 @@ export default function OscillatingSphereCanvas() {
 
     const draw = () => {
       if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
       ctx.save();
-      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
       ctx.fillStyle = "#00b1da";
 
       const distortion = distortionRef.current;
@@ -82,17 +87,20 @@ export default function OscillatingSphereCanvas() {
     };
 
     let animationFrameId: number;
+    let timeoutId: NodeJS.Timeout;
 
     const animate = () => {
       draw();
-      animationFrameId = requestAnimationFrame(animate);
+      if (isMobile) {
+        timeoutId = setTimeout(animate, 1000 / 30); // ~30fps on mobile
+      } else {
+        animationFrameId = requestAnimationFrame(animate);
+      }
     };
 
     animate();
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isDesktop || !canvas) return;
-
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const normX = clamp(x / rect.width, 0, 1); // 0 (left) → 1 (right)
@@ -101,13 +109,14 @@ export default function OscillatingSphereCanvas() {
       distortionRef.current = lerp(0.7, 1.5, normX);
     };
 
-    if (isDesktop) {
+    if (!isMobile) {
       window.addEventListener("mousemove", handleMouseMove);
     }
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      if (isDesktop) {
+      clearTimeout(timeoutId);
+      if (!isMobile) {
         window.removeEventListener("mousemove", handleMouseMove);
       }
     };
@@ -115,7 +124,11 @@ export default function OscillatingSphereCanvas() {
 
   return (
     <div className="w-full flex justify-center items-center py-10 bg-transparent">
-      <canvas ref={canvasRef} className="rounded-xl max-w-full h-auto" />
+      <canvas
+        ref={canvasRef}
+        className="rounded-xl max-w-full h-auto"
+        style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
+      />
     </div>
   );
 }

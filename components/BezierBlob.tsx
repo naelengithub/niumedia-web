@@ -14,6 +14,21 @@ export default function TerrainWaveCanvas({
   const canvasRef = useRef<HTMLDivElement>(null);
   const sketchRef = useRef<p5Types | null>(null);
 
+  // 🧠 Real cursor position tracking
+  const cursorPos = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const updateCursor = (e: MouseEvent) => {
+      cursorPos.current = { x: e.clientX, y: e.clientY };
+    };
+
+    window.addEventListener("mousemove", updateCursor);
+
+    return () => {
+      window.removeEventListener("mousemove", updateCursor);
+    };
+  }, []);
+
   useEffect(() => {
     if (sketchRef.current) return;
     let cancelled = false;
@@ -54,10 +69,19 @@ export default function TerrainWaveCanvas({
           p.noFill();
           p.strokeWeight(0.3);
 
-          // Determine mouse offsets (or ripple-center when not responsive)
-          const mx = cursorResponsive === "yes" ? p.mouseX - p.width / 2 : 0;
-          // when not responsive, push the ripple origin “forward” by 50 units on Z
-          const my = cursorResponsive === "yes" ? p.mouseY - p.height / 2 : 50;
+          let mx = 0;
+          let my = 50;
+
+          if (cursorResponsive === "yes" && canvasRef.current) {
+            const bounds = canvasRef.current.getBoundingClientRect();
+            const { x: cursorX, y: cursorY } = cursorPos.current;
+
+            const centerX = bounds.left + bounds.width / 2;
+            const centerY = bounds.top + bounds.height / 2;
+
+            mx = cursorX - centerX;
+            my = cursorY - centerY;
+          }
 
           for (let z = -z_res / 2; z < z_res / 2 - 1; z++) {
             p.beginShape();
@@ -65,12 +89,12 @@ export default function TerrainWaveCanvas({
               const px = x * offset;
               const pz = z * offset;
 
-              // base Perlin terrain
+              // Base terrain
               let y =
                 p.noise(x * noiseScale, z * noiseScale, elapsedTime * 0.5) *
                 noiseAmp;
 
-              // ripple effect if within radius
+              // Ripple
               const d = p.dist(mx, my, px, pz);
               if (d < rippleRadius) {
                 const ripple = p.map(
@@ -85,7 +109,7 @@ export default function TerrainWaveCanvas({
                 y += ripple * falloff * centerSmooth;
               }
 
-              // fade edges
+              // Edge fade
               const edgeNoise = p.noise(
                 px * 0.01,
                 pz * 0.01,

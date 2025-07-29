@@ -7,90 +7,79 @@ import {
   useTransform,
   useAnimationFrame,
 } from "framer-motion";
-import SoftOrbit from "../three/SoftOrbit";
 import TerrainWaveCanvas from "../BezierBlob";
 import Image from "next/image";
 
 export default function Hero() {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scale = Math.min(1 + scrollY / 300, 6);
-  const translateY = Math.min(scrollY / 4, 800);
-
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile(); // Initial check
+    checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // 🌀 Sync PNG animation with center ripple
-  const yTime = useMotionValue(0);
-  const syncedY = useTransform(
-    yTime,
-    (t) => Math.cos(t * 1.5) * 3 // rippleSpeed = 1.5, amplitude = 10px
-  );
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const scale = useMotionValue(1);
 
+  useEffect(() => {
+    if (isMobile) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const centerX = window.innerWidth / 2;
+      const centerYOffset = 96; // Slightly above cursor
+      const centerY = window.innerHeight / 2 - centerYOffset;
+
+      const relX = e.clientX - centerX;
+      const relY = e.clientY - centerY;
+      const normalizedY = relY / centerY;
+
+      const offsetY = -normalizedY * 120 - Math.pow(normalizedY, 3) * 60;
+      const adjustedY = relY + offsetY;
+
+      // 🌐 Clamp logic based on image size
+      const imageHalfWidth = 192; // 384px / 2
+      const imageHalfHeight = 192;
+
+      const maxX = centerX - imageHalfWidth;
+      const maxY = centerY - imageHalfHeight;
+
+      const clampedX = Math.max(-maxX, Math.min(relX, maxX));
+      const clampedY = Math.max(-maxY, Math.min(adjustedY, maxY));
+
+      mx.set(clampedX);
+      my.set(clampedY);
+
+      const scaleMapped = 1 - Math.pow(adjustedY / centerY, 2) * 1.2;
+      scale.set(Math.max(0.15, scaleMapped));
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [isMobile]);
+
+  // Mobile fallback
+  const yTime = useMotionValue(0);
+  const syncedY = useTransform(yTime, (t) => Math.cos(t * 1.5) * 3);
   useAnimationFrame((t) => {
-    yTime.set(t / 1000); // Convert ms to seconds
+    yTime.set(t / 1000);
   });
 
   return (
     <section className="pointer-events-none flex justify-center items-end sticky top-0 h-screen z-10 pb-24 text-gray-100 overflow-x-clip">
-      {/* 🔆 Glow Background */}
-      {/* <motion.div
-        className="absolute inset-0 z-[-30] flex items-center justify-center overflow-x-clip"
-        initial={{ opacity: 0.12 }}
-        animate={{ y: [0, -2, 0, 2, 0] }}
-        transition={{
-          duration: 30,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      >
-        <svg
-          className="w-[150vw] h-[150vh]"
-          viewBox="0 0 100 100"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <radialGradient id="lightGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-          </radialGradient>
-          <circle cx="50" cy="50" r="50" fill="url(#lightGlow)" />
-        </svg>
-      </motion.div> */}
+      <TerrainWaveCanvas cursorResponsive={isMobile ? "no" : "yes"} />
 
-      {/* 🌀 SoftOrbit stays stable */}
-      <TerrainWaveCanvas cursorResponsive="no" />
       <div className="absolute z-0 top-5/12 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:w-[500px] sm:h-[500px]">
-        <div className="absolute z-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-screen sm:h-screen flex items-center">
+        <div className="absolute z-0 top-5/12 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-screen sm:h-screen flex items-center justify-center">
           {isMobile ? (
             <motion.div
               className="w-full h-full relative"
               style={{ y: syncedY }}
             >
               <Image
-                src="/models/sph02.png"
+                src="/images/im2.png"
                 alt="SoftOrbit PNG"
                 fill
                 className="object-contain"
@@ -98,38 +87,21 @@ export default function Hero() {
               />
             </motion.div>
           ) : (
-            <SoftOrbit />
+            <motion.div
+              className="w-96 h-full relative"
+              style={{ x: mx, y: my, scale }}
+            >
+              <Image
+                src="/images/im2.png"
+                alt="SoftOrbit PNG"
+                fill
+                className="object-contain"
+                priority
+              />
+            </motion.div>
           )}
         </div>
       </div>
-
-      {/* 🔠 Scrolling text content only */}
-      <motion.div
-        className="relative flex flex-col items-center text-center space-y-6 transition-transform duration-200 ease-out origin-bottom"
-        style={{
-          transform: `scale(${scale}) translateY(-${translateY}px)`,
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: 1.2,
-            delay: 0.1,
-            ease: [0.33, 1, 0.68, 1],
-          }}
-          className="flex flex-col items-center space-y-6"
-        >
-          <h1 className="font-myriad text-[20vw] mb-0 px-0 leading-tight">
-            Niumedia
-          </h1>
-          <div className="flex w-full font-myriad justify-between text-xl leading-0 font-medium lg:text-6xl tracking-wider pl-1 sm:pl-2 md:pl-3 lg:pl-4">
-            {"networks".split("").map((char, index) => (
-              <span key={index}>{char}</span>
-            ))}
-          </div>
-        </motion.div>
-      </motion.div>
     </section>
   );
 }
