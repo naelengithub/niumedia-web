@@ -222,6 +222,8 @@ export default function AccordionComponent({ services, id }: Props) {
             </AnimatePresence>
           </div>
         ))}
+
+        {/* Oscillating sphere and gradient visual */}
         <div className="absolute inset-0 pointer-events-none">
           <svg
             viewBox="0 0 600 600"
@@ -240,15 +242,33 @@ export default function AccordionComponent({ services, id }: Props) {
             />
           </svg>
         </div>
+
         <div className="relative w-full h-fit min-h-64 overflow-hidden m-auto">
           <OscillatingSphereCanvas />
-          {/* <Image
-            src="/images/linea_y_circulo.png"
-            alt="Visual"
-            width={256}
-            height={128}
-            className="absolute top-1/4 left-1/2 z-10 w-32 h-20"
-          /> */}
+        </div>
+
+        {/* 🔥 IMAGE PRELOADING BLOCK (added) */}
+        <div className="hidden">
+          {services.map((service) => (
+            <div key={service._id}>
+              <Image
+                src={service.image}
+                alt=""
+                width={1}
+                height={1}
+                className="w-1 h-1"
+              />
+              {service.imageSecondary && (
+                <Image
+                  src={service.imageSecondary}
+                  alt=""
+                  width={1}
+                  height={1}
+                  className="w-1 h-1"
+                />
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>
