@@ -49,6 +49,11 @@ export default function OscillatingSphereCanvas() {
       period: 1,
     }));
 
+    // 👇 NEW: boost speed on mobile
+    if (!isDesktop) {
+      speedRef.current = 0.6; // Adjust as needed
+    }
+
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.save();
