@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -12,6 +12,7 @@ import Image from "next/image";
 
 export default function Hero() {
   const [isMobile, setIsMobile] = useState(false);
+  const [startFollowing, setStartFollowing] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -24,43 +25,72 @@ export default function Hero() {
   const my = useMotionValue(0);
   const scale = useMotionValue(1);
 
+  const targetX = useRef(0);
+  const targetY = useRef(0);
+
   useEffect(() => {
-    if (isMobile) return;
+    const timeout = setTimeout(() => {
+      setStartFollowing(true);
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile || !startFollowing) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       const centerX = window.innerWidth / 2;
-      const centerYOffset = 96; // Slightly above cursor
+      const centerYOffset = 96;
       const centerY = window.innerHeight / 2 - centerYOffset;
+
+      const tY = e.clientY / window.innerHeight;
+      const tX = e.clientX / window.innerWidth;
+
+      const offsetY = (() => {
+        if (tY < 1 / 3) return -150 * (1 - tY * 3);
+        if (tY < 2 / 3) return 0;
+        return -150 * (tY - 2 / 3) * 3;
+      })();
+
+      const offsetX = (() => {
+        if (tX < 1 / 3) return -50 * (1 - tX * 3);
+        if (tX < 2 / 3) return 0;
+        return -50 * (tX - 2 / 3) * 3;
+      })();
 
       const relX = e.clientX - centerX;
       const relY = e.clientY - centerY;
-      const normalizedY = relY / centerY;
 
-      const offsetY = -normalizedY * 120 - Math.pow(normalizedY, 3) * 60;
-      const adjustedY = relY + offsetY;
-
-      // 🌐 Clamp logic based on image size
-      const imageHalfWidth = 192; // 384px / 2
+      const imageHalfWidth = 192;
       const imageHalfHeight = 192;
 
       const maxX = centerX - imageHalfWidth;
       const maxY = centerY - imageHalfHeight;
 
-      const clampedX = Math.max(-maxX, Math.min(relX, maxX));
-      const clampedY = Math.max(-maxY, Math.min(adjustedY, maxY));
+      const clampedX = Math.max(-maxX, Math.min(relX + offsetX, maxX));
+      const clampedY = Math.max(-maxY, Math.min(relY + offsetY, maxY));
 
-      mx.set(clampedX);
-      my.set(clampedY);
+      // 👇 Just update target values
+      targetX.current = clampedX;
+      targetY.current = clampedY;
 
-      const scaleMapped = 1 - Math.pow(adjustedY / centerY, 2) * 1.2;
-      scale.set(Math.max(0.15, scaleMapped));
+      // 📏 Shrink only in upper third
+      const scaleMapped = tY < 1 / 3 ? 1 - (1 / 3 - tY) * 0.5 * 3 : 1;
+      scale.set(scaleMapped);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [isMobile, mx, my, scale]);
+  }, [isMobile, startFollowing, scale]);
 
-  // Mobile fallback
+  // 🌀 Smooth interpolation
+  useAnimationFrame(() => {
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    mx.set(lerp(mx.get(), targetX.current, 0.1));
+    my.set(lerp(my.get(), targetY.current, 0.1));
+  });
+
+  // 🌙 Mobile floating fallback
   const yTime = useMotionValue(0);
   const syncedY = useTransform(yTime, (t) => Math.cos(t * 1.5) * 3);
   useAnimationFrame((t) => {
@@ -89,7 +119,11 @@ export default function Hero() {
           ) : (
             <motion.div
               className="w-96 h-full relative"
-              style={{ x: mx, y: my, scale }}
+              style={{
+                x: startFollowing ? mx : 0,
+                y: startFollowing ? my : 0,
+                scale,
+              }}
             >
               <Image
                 src="/images/im2.png"

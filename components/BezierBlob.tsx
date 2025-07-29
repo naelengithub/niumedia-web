@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type p5Types from "p5";
 
 interface TerrainWaveCanvasProps {
@@ -14,20 +14,33 @@ export default function TerrainWaveCanvas({
   const canvasRef = useRef<HTMLDivElement>(null);
   const sketchRef = useRef<p5Types | null>(null);
 
-  // 🧠 Real cursor position tracking
-  const cursorPos = useRef({ x: 0, y: 0 });
+  const cursorPos = useRef({
+    x: typeof window !== "undefined" ? window.innerWidth / 2 : 0,
+    y: typeof window !== "undefined" ? window.innerHeight / 2 : 0,
+  });
+
+  const lagPos = useRef({ ...cursorPos.current });
+
+  const [followCursor, setFollowCursor] = useState(false);
+
+  // ⏱ Delay real cursor tracking
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setFollowCursor(true);
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
+    if (!followCursor) return;
+
     const updateCursor = (e: MouseEvent) => {
       cursorPos.current = { x: e.clientX, y: e.clientY };
     };
 
     window.addEventListener("mousemove", updateCursor);
-
-    return () => {
-      window.removeEventListener("mousemove", updateCursor);
-    };
-  }, []);
+    return () => window.removeEventListener("mousemove", updateCursor);
+  }, [followCursor]);
 
   useEffect(() => {
     if (sketchRef.current) return;
@@ -74,13 +87,22 @@ export default function TerrainWaveCanvas({
 
           if (cursorResponsive === "yes" && canvasRef.current) {
             const bounds = canvasRef.current.getBoundingClientRect();
-            const { x: cursorX, y: cursorY } = cursorPos.current;
+
+            // 🧠 Lerp cursor toward real mouse for smooth ripple lag
+            const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+            lagPos.current.x = lerp(lagPos.current.x, cursorPos.current.x, 0.1);
+            lagPos.current.y = lerp(lagPos.current.y, cursorPos.current.y, 0.1);
+
+            const { x: cursorX, y: cursorY } = lagPos.current;
 
             const centerX = bounds.left + bounds.width / 2;
             const centerY = bounds.top + bounds.height / 2;
 
-            mx = cursorX - centerX;
-            my = cursorY - centerY;
+            const verticalOffset = 150;
+            const horizontalCompensation = 0.6;
+
+            mx = (cursorX - centerX) * horizontalCompensation;
+            my = cursorY - centerY + verticalOffset;
           }
 
           for (let z = -z_res / 2; z < z_res / 2 - 1; z++) {
@@ -89,12 +111,10 @@ export default function TerrainWaveCanvas({
               const px = x * offset;
               const pz = z * offset;
 
-              // Base terrain
               let y =
                 p.noise(x * noiseScale, z * noiseScale, elapsedTime * 0.5) *
                 noiseAmp;
 
-              // Ripple
               const d = p.dist(mx, my, px, pz);
               if (d < rippleRadius) {
                 const ripple = p.map(
@@ -109,7 +129,6 @@ export default function TerrainWaveCanvas({
                 y += ripple * falloff * centerSmooth;
               }
 
-              // Edge fade
               const edgeNoise = p.noise(
                 px * 0.01,
                 pz * 0.01,
