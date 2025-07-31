@@ -55,7 +55,7 @@ export default function Navbar({ className = "" }: NavbarProps) {
       <nav
         className={`fixed top-0 left-0 w-screen z-50 px-6 py-6 flex items-center justify-between md:px-12 transition-all duration-500 transform ${
           showNavbar ? "translate-y-0" : "-translate-y-full"
-        } ${isProjectsPage ? "text-black" : "text-gray-100"} ${
+        } ${"text-gray-100"} ${
           showTitle && !isProjectsPage
             ? "backdrop-blur-md bg-gradient from-white/10 to-transparent"
             : ""

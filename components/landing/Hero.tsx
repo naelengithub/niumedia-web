@@ -105,7 +105,7 @@ export default function Hero() {
         <div className="absolute z-0 top-5/12 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-screen sm:h-screen flex items-center justify-center">
           {isMobile ? (
             <motion.div
-              className="w-full h-full relative"
+              className="w-full h-full relative max-w-[400px]"
               style={{ y: syncedY }}
             >
               <Image
@@ -118,7 +118,7 @@ export default function Hero() {
             </motion.div>
           ) : (
             <motion.div
-              className="w-96 h-full relative"
+              className="w-96 h-full relative max-w-[500px]"
               style={{
                 x: startFollowing ? mx : 0,
                 y: startFollowing ? my : 0,
